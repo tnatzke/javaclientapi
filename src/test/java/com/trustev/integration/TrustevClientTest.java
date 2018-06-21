@@ -401,11 +401,12 @@ public class TrustevClientTest {
     @Test
     public void testSentOtp() throws TrustevApiException {
 
-        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Case kase = new Case(UUID.randomUUID(), "testOTPOffered");
         Customer customer = new Customer();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        //change this to a correct number
+        
+        // change this to a correct number
         customer.setPhoneNumber("353878767543");
         kase.setCustomer(customer);
 
@@ -414,25 +415,30 @@ public class TrustevClientTest {
         DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
         assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
         DigitalAuthenticationResult auth = new DigitalAuthenticationResult();
+        
+        // update the casenumber to force another otp InProgress status
+        responseCase.setCaseNumber("testOtpInProgress");
+        
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
         OTPResult otp = new OTPResult(responseCase.getId());
         otp.setDeliveryType(PhoneDeliveryType.Sms);
         otp.setLanguage(OTPLanguageEnum.EN);
-
-        auth.setOtp(otp);
-        DigitalAuthenticationResult check=ApiClient.postOtp(responseCase.getId(), auth);
-        assertEquals(check.getOtp().getStatus(),OTPStatus.InProgress);
-
+        
+        OTPResult check = ApiClient.postOtp(responseCase.getId(), otp);
+        assertEquals(check.getStatus(),OTPStatus.InProgress);
     }
 
 
     @Test
     public void testVerifyOtp() throws TrustevApiException {
 
-        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Case kase = new Case(UUID.randomUUID(), "testCaseNumberOTPOffered");
         Customer customer = new Customer();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        //change this to a correct number
+        
+        // change this to a correct number
         customer.setPhoneNumber("353878767543");
         kase.setCustomer(customer);
 
@@ -440,26 +446,30 @@ public class TrustevClientTest {
 
         DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
         assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
-        DigitalAuthenticationResult auth = new DigitalAuthenticationResult();
+        
+        // update the casenumber to force another otp InProgress status
+        responseCase.setCaseNumber("testCaseNumberOTPInProgress");
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
         OTPResult otp = new OTPResult(responseCase.getId());
         otp.setDeliveryType(PhoneDeliveryType.Sms);
         otp.setLanguage(OTPLanguageEnum.EN);
 
-        auth.setOtp(otp);
-        DigitalAuthenticationResult check=ApiClient.postOtp(responseCase.getId(), auth);
-        assertEquals(check.getOtp().getStatus(),OTPStatus.InProgress);
+        OTPResult check = ApiClient.postOtp(responseCase.getId(), otp);
+        assertEquals(check.getStatus(), OTPStatus.InProgress);
 
-        DigitalAuthenticationResult verifyPassword = new DigitalAuthenticationResult();
         OTPResult otpPassword = new OTPResult(responseCase.getId());
         otpPassword.setDeliveryType(PhoneDeliveryType.Sms);
         otpPassword.setLanguage(OTPLanguageEnum.EN);
         otpPassword.setStatus(OTPStatus.InProgress);
-        //make sure that you edit this with the code received from the sms
         otpPassword.setPasscode("12345");
-
-        verifyPassword.setOtp(otpPassword);
-        DigitalAuthenticationResult verify=ApiClient.putOtp(responseCase.getId(), verifyPassword);
-        assertEquals(verify.getOtp().getMessage(),"OTP Offered And Failed");
+        
+        // update the casenumber to force another otp failed status
+        responseCase.setCaseNumber("testCaseNumberOTPFailed");
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
+        OTPResult verify = ApiClient.putOtp(responseCase.getId(), otpPassword);
+        assertEquals(OTPStatus.Fail, verify.getStatus());
     }
 
 

@@ -24,9 +24,6 @@ public class OTPResult extends BaseObject {
     @JsonProperty("AuthURL")
     private String authURL;
 
-    @JsonProperty("Message")
-    private String message;
-
     @JsonProperty("Passcode")
     private String passcode;
 
@@ -92,14 +89,6 @@ public class OTPResult extends BaseObject {
 
     public void setPasscode(String passcode) {
         this.passcode = passcode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     public PhoneDeliveryType getDeliveryType() {

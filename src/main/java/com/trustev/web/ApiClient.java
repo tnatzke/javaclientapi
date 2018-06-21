@@ -253,9 +253,9 @@ public class ApiClient {
      * @return digital auth object
      * @throws TrustevApiException A Custom Trustev Api Exception
      */
-    public static DigitalAuthenticationResult postOtp(String caseId, DigitalAuthenticationResult request) throws TrustevApiException {
+    public static OTPResult postOtp(String caseId, OTPResult request) throws TrustevApiException {
         String url = "/case/"+ caseId+"/authentication/otp" ;
-        DigitalAuthenticationResult response = (DigitalAuthenticationResult) PerformHttpCall(url, HttpMethod.POST, DigitalAuthenticationResult.class, request, true);
+        OTPResult response = (OTPResult) PerformHttpCall(url, HttpMethod.POST, OTPResult.class, request, true);
         return response;
     }
     /**
@@ -266,9 +266,9 @@ public class ApiClient {
      * @return digital auth object
      * @throws TrustevApiException A Custom Trustev Api Exception
      */
-    public static DigitalAuthenticationResult putOtp(String caseId, DigitalAuthenticationResult request) throws TrustevApiException {
+    public static OTPResult putOtp(String caseId, OTPResult request) throws TrustevApiException {
         String url = "/case/"+ caseId+"/authentication/otp" ;
-        DigitalAuthenticationResult response = (DigitalAuthenticationResult) PerformHttpCall(url, HttpMethod.PUT, DigitalAuthenticationResult.class, request, true);
+        OTPResult response = (OTPResult) PerformHttpCall(url, HttpMethod.PUT, OTPResult.class, request, true);
         return response;
     }
 
