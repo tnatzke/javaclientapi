@@ -11,12 +11,25 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
 
-import com.trustev.domain.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.trustev.domain.entities.Address;
+import com.trustev.domain.entities.BaseUrl;
+import com.trustev.domain.entities.Case;
+import com.trustev.domain.entities.CaseStatus;
+import com.trustev.domain.entities.CaseStatusType;
+import com.trustev.domain.entities.CaseType;
+import com.trustev.domain.entities.Customer;
+import com.trustev.domain.entities.Decision;
+import com.trustev.domain.entities.DecisionResult;
+import com.trustev.domain.entities.DetailedDecision;
+import com.trustev.domain.entities.Email;
+import com.trustev.domain.entities.Payment;
+import com.trustev.domain.entities.Transaction;
+import com.trustev.domain.entities.TransactionItem;
 import com.trustev.domain.exceptions.TrustevApiException;
 import com.trustev.web.ApiClient;
 
@@ -117,31 +130,6 @@ public class TrustevClientTest {
         assertNotNull(responseCase.getCustomer().getId());
         assertEquals("John", responseCase.getCustomer().getFirstName());
         assertEquals("Doe", responseCase.getCustomer().getLastName());
-    }
-    @Test
-    public void testAddFulfilmentToCase() throws TrustevApiException {
-
-        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
-        Customer customer = new Customer();
-        customer.setFirstName("John");
-        customer.setLastName("Doe");
-        kase.setCustomer(customer);
-        Fulfilment fulfilment= new Fulfilment();
-        fulfilment.setFulfilmentGeoLocation(FulfilmentGeoLocation.National);
-        fulfilment.setFulfilmentMethod(FulfilmentMethod.Courier);
-        fulfilment.setTimeToFulfilment(TimeToFulfilment.SameDay);
-        kase.setFulfilment(fulfilment);
-
-        Case responseCase = ApiClient.postCase(kase);
-
-        assertNotNull(responseCase.getId());
-        assertNotNull(responseCase.getCustomer());
-        assertNotNull(responseCase.getCustomer().getId());
-        assertEquals("John", responseCase.getCustomer().getFirstName());
-        assertEquals("Doe", responseCase.getCustomer().getLastName());
-        assertEquals(FulfilmentGeoLocation.National, responseCase.getFulfilment().getFulfilmentGeoLocation());
-        assertEquals(FulfilmentMethod.Courier, responseCase.getFulfilment().getFulfilmentMethod());
-        assertEquals(TimeToFulfilment.SameDay, responseCase.getFulfilment().getTimeToFulfilment());
     }
 
 
@@ -474,7 +462,6 @@ public class TrustevClientTest {
 
 
     /***************************End OTP Tests******************************/
-
 
     /*****************************Customer Object Tests**********************************/
     @Test
