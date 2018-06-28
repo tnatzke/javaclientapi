@@ -156,6 +156,22 @@ public class Case extends BaseObject{
 	}
 	
 	/**
+	 * @return The MarketType of this Case
+	 */
+	@JsonProperty("MarketType")
+	public MarketType getMarketType() {
+		return marketType;
+	}
+
+	/**
+	 * @param marketType to set
+	 */
+	@JsonProperty("MarketType")
+	public void setMarketType(MarketType marketType) {
+		this.marketType = marketType;
+	}
+	
+	/**
 	 * @return the Location ConsentId used for the location services
 	 */
 	@JsonProperty("LocationConsentId")
@@ -203,6 +219,8 @@ public class Case extends BaseObject{
 	
 	private CaseType caseType;
 	
+	private MarketType marketType;
+
 	private String locationConsentId;
 
 	private Fulfilment fulfilment;
