@@ -52,6 +52,10 @@ public class Case extends BaseObject{
 		return caseNumber;
 	}
 	
+	public void setCaseNumber(String caseNumber) {
+		this.caseNumber = caseNumber;
+	}
+
 	/**
 	 * @return Transaction Object - includes details such as Transaction Amount, Currency, Items and Transaction delivery/billing address.
 	 */

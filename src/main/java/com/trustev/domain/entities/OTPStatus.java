@@ -42,6 +42,7 @@ public enum OTPStatus {
     /// OTP is not Configured
     /// </summary>
     NotConfigured(7);
+	
     private final int status;
     private OTPStatus(final int status) {
         this.status = status;

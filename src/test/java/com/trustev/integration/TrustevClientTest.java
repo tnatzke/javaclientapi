@@ -3,19 +3,17 @@ package com.trustev.integration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
-
+import com.trustev.domain.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import com.trustev.domain.entities.Address;
 import com.trustev.domain.entities.BaseUrl;
 import com.trustev.domain.entities.Case;
@@ -539,6 +537,83 @@ public class TrustevClientTest {
 
     /***************************End Detailed Decision Tests******************************/
 
+    /*****************************OTP Tests***************************/
+    @Test
+    public void testSentOtp() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), "testOTPOffered");
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        
+        // change this to a correct number
+        customer.setPhoneNumber("353878767543");
+        kase.setCustomer(customer);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
+        assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
+        DigitalAuthenticationResult auth = new DigitalAuthenticationResult();
+        
+        // update the casenumber to force another otp InProgress status
+        responseCase.setCaseNumber("testOtpInProgress");
+        
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
+        OTPResult otp = new OTPResult(responseCase.getId());
+        otp.setDeliveryType(PhoneDeliveryType.Sms);
+        otp.setLanguage(OTPLanguageEnum.EN);
+        
+        OTPResult check = ApiClient.postOtp(responseCase.getId(), otp);
+        assertEquals(check.getStatus(),OTPStatus.InProgress);
+    }
+
+
+    @Test
+    public void testVerifyOtp() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), "testCaseNumberOTPOffered");
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        
+        // change this to a correct number
+        customer.setPhoneNumber("353878767543");
+        kase.setCustomer(customer);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
+        assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
+        
+        // update the casenumber to force another otp InProgress status
+        responseCase.setCaseNumber("testCaseNumberOTPInProgress");
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
+        OTPResult otp = new OTPResult(responseCase.getId());
+        otp.setDeliveryType(PhoneDeliveryType.Sms);
+        otp.setLanguage(OTPLanguageEnum.EN);
+
+        OTPResult check = ApiClient.postOtp(responseCase.getId(), otp);
+        assertEquals(check.getStatus(), OTPStatus.InProgress);
+
+        OTPResult otpPassword = new OTPResult(responseCase.getId());
+        otpPassword.setDeliveryType(PhoneDeliveryType.Sms);
+        otpPassword.setLanguage(OTPLanguageEnum.EN);
+        otpPassword.setStatus(OTPStatus.InProgress);
+        otpPassword.setPasscode("12345");
+        
+        // update the casenumber to force another otp failed status
+        responseCase.setCaseNumber("testCaseNumberOTPFailed");
+        responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
+        
+        OTPResult verify = ApiClient.putOtp(responseCase.getId(), otpPassword);
+        assertEquals(OTPStatus.Fail, verify.getStatus());
+    }
+
+
+    /***************************End OTP Tests******************************/
 
     /*****************************Customer Object Tests**********************************/
     @Test
