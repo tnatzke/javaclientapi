@@ -3,20 +3,32 @@ package com.trustev.integration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
-
 import com.trustev.domain.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import com.trustev.domain.entities.Address;
+import com.trustev.domain.entities.BaseUrl;
+import com.trustev.domain.entities.Case;
+import com.trustev.domain.entities.CaseStatus;
+import com.trustev.domain.entities.CaseStatusType;
+import com.trustev.domain.entities.CaseType;
+import com.trustev.domain.entities.Customer;
+import com.trustev.domain.entities.Decision;
+import com.trustev.domain.entities.DecisionResult;
+import com.trustev.domain.entities.DetailedDecision;
+import com.trustev.domain.entities.Email;
+import com.trustev.domain.entities.MarketType;
+import com.trustev.domain.entities.Payment;
+import com.trustev.domain.entities.Transaction;
+import com.trustev.domain.entities.TransactionItem;
 import com.trustev.domain.exceptions.TrustevApiException;
 import com.trustev.web.ApiClient;
 
@@ -244,6 +256,159 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
     }
 
+    @Test
+    public void testApplicationCaseTypeDefaultMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.Default);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.Default, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeUnsecuredPersonalLoansMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.UnsecuredPersonalLoans);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.UnsecuredPersonalLoans, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeCreditCardsMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.CreditCards);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.CreditCards, responseCase.getMarketType());
+    }
+    
+    
+    @Test
+    public void testApplicationCaseTypeMultiFamilyRentalScreeningMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.MultiFamilyRentalScreening);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.MultiFamilyRentalScreening, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeAutoLendingMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.AutoLending);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.AutoLending, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeShortTermAlternativeLendingMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.ShortTermAlternativeLending);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.ShortTermAlternativeLending, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeShortTermTelecomAndCommunicationsMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.TelecomAndCommunications);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.TelecomAndCommunications, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeInsuranceMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.Insurance);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.Insurance, responseCase.getMarketType());
+    }
+    
+    @Test
+    public void testApplicationCaseTypeMortgageMarketTypePost() throws TrustevApiException {
+
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Customer customer = new Customer();
+        customer.setFirstName("John");
+        customer.setLastName("Doe");
+        kase.setCustomer(customer);
+        kase.setCaseType(CaseType.Application);
+        kase.setMarketType(MarketType.Mortgage);
+
+        Case responseCase = ApiClient.postCase(kase);
+
+        assertEquals(CaseType.Application, responseCase.getCaseType());
+        assertEquals(MarketType.Mortgage, responseCase.getMarketType());
+    }
     /******************************End of Case Tests**************************************/
 
 
