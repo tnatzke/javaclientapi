@@ -11,25 +11,12 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
 
+import com.trustev.domain.entities.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.trustev.domain.entities.Address;
-import com.trustev.domain.entities.BaseUrl;
-import com.trustev.domain.entities.Case;
-import com.trustev.domain.entities.CaseStatus;
-import com.trustev.domain.entities.CaseStatusType;
-import com.trustev.domain.entities.CaseType;
-import com.trustev.domain.entities.Customer;
-import com.trustev.domain.entities.Decision;
-import com.trustev.domain.entities.DecisionResult;
-import com.trustev.domain.entities.DetailedDecision;
-import com.trustev.domain.entities.Email;
-import com.trustev.domain.entities.Payment;
-import com.trustev.domain.entities.Transaction;
-import com.trustev.domain.entities.TransactionItem;
 import com.trustev.domain.exceptions.TrustevApiException;
 import com.trustev.web.ApiClient;
 
