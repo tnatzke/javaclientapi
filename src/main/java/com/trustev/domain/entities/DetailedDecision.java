@@ -19,6 +19,9 @@ public class DetailedDecision extends Decision{
 	private ComputedData computedData;
 	@JsonProperty("Authentication")
 	private DigitalAuthenticationResult Authentication;
+
+	@JsonProperty("AuthenticatedDataRequest")
+	private AutoFillDetails authenticatedDataRequest;
 	
 	public String getCaseNumber() {
 		return caseNumber;
@@ -59,5 +62,13 @@ public class DetailedDecision extends Decision{
 
 	public void setAuthentication(DigitalAuthenticationResult authentication) {
 		Authentication = authentication;
+	}
+
+	public AutoFillDetails getAuthenticatedDataRequest() {
+		return authenticatedDataRequest;
+	}
+
+	public void setAuthenticatedDataRequest(AutoFillDetails authenticatedDataRequest) {
+		this.authenticatedDataRequest = authenticatedDataRequest;
 	}
 }

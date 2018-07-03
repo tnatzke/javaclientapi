@@ -13,6 +13,7 @@ public class MerchantSite extends BaseObject {
     private String userName;
     private String password;
     private String secret;
+    private String publicKey;
     private String baseUrlString;
     private BaseUrl baseUrl;
     private String apiToken;
@@ -21,18 +22,20 @@ public class MerchantSite extends BaseObject {
     public MerchantSite() {
     }
 
-    public MerchantSite(String userName, String password, String secret, String baseUrlString) {
+    public MerchantSite(String userName, String password, String secret, String baseUrlString, String publicKey) {
         this.userName = userName;
         this.password = password;
         this.secret = secret;
         this.baseUrlString = baseUrlString;
+        this.publicKey = publicKey;
     }
 
-    public MerchantSite(String userName, String password, String secret, BaseUrl baseUrl) {
+    public MerchantSite(String userName, String password, String secret, BaseUrl baseUrl, String publicKey) {
         this.userName = userName;
         this.password = password;
         this.secret = secret;
         this.baseUrl = baseUrl;
+        this.publicKey = publicKey;
     }
 
     /**
@@ -104,5 +107,15 @@ public class MerchantSite extends BaseObject {
     @JsonProperty("ExpiryDate")
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    @JsonProperty("BaseUrlString")
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    @JsonProperty("BaseUrlString")
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
     }
 }

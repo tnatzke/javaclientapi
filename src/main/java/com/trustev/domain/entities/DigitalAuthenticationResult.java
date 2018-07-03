@@ -18,6 +18,9 @@ public class DigitalAuthenticationResult extends BaseObject {
     @JsonProperty("OTP")
     private OTPResult otp;
 
+    @JsonProperty("KBA")
+    private KBAResult kba;
+
     public String getId() {
         return id;
     }
@@ -54,5 +57,13 @@ public class DigitalAuthenticationResult extends BaseObject {
 
     public void setOtp(OTPResult otp) {
         this.otp = otp;
+    }
+
+    public KBAResult getKba() {
+        return kba;
+    }
+
+    public void setKba(KBAResult kba) {
+        this.kba = kba;
     }
 }

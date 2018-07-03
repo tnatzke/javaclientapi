@@ -26,12 +26,14 @@ public class TrustevMultipleMerchantSiteClientTest {
     public static String userName;
     public static String password;
     public static String secret;
+    public static String publicKey;
     public static BaseUrl baseUrl;
     public static String alternateUrl;
 
     public static String userName2;
     public static String password2;
     public static String secret2;
+    public static String publicKey2;
     public static BaseUrl baseUrl2;
     public static String alternateUrl2;
 
@@ -51,11 +53,13 @@ public class TrustevMultipleMerchantSiteClientTest {
         userName = System.getProperty("userName");
         password = System.getProperty("password");
         secret = System.getProperty("secret");
+        publicKey = System.getProperty("publicKey");
         alternateUrl = System.getProperty("altUrl");
 
         userName2 = System.getProperty("userName2");
         password2 = System.getProperty("password2");
         secret2 = System.getProperty("secret2");
+        publicKey2 = System.getProperty("publicKey2");
         alternateUrl2 = System.getProperty("altUrl2");
 
         String baseUrlString;
@@ -91,11 +95,13 @@ public class TrustevMultipleMerchantSiteClientTest {
                 userName = prop.getProperty("userName");
                 password = prop.getProperty("password");
                 secret = prop.getProperty("secret");
+                publicKey = prop.getProperty("publicKey");
                 alternateUrl = prop.getProperty("altUrl");
 
                 userName2 = prop.getProperty("userName2");
                 password2 = prop.getProperty("password2");
                 secret2 = prop.getProperty("secret2");
+                publicKey2 = prop.getProperty("publicKey2");
                 alternateUrl2 = prop.getProperty("altUrl2");
 
                 baseUrlString = prop.getProperty("url");
@@ -139,17 +145,17 @@ public class TrustevMultipleMerchantSiteClientTest {
         ApiClient.removeAllMerchantSites();
 
         if (alternateUrl != null && alternateUrl != "") {
-            ApiClient.SetUp(userName, password, secret, alternateUrl);
-            ApiClient.SetUp(userName2, password2, secret2, alternateUrl2);
+            ApiClient.SetUp(userName, password, secret, publicKey, alternateUrl);
+            ApiClient.SetUp(userName2, password2, secret2, publicKey2, alternateUrl2);
 
-            merchantSite1 = new MerchantSite(userName, password, secret, alternateUrl);
-            merchantSite2 = new MerchantSite(userName2, password2, secret2, alternateUrl2);
+            merchantSite1 = new MerchantSite(userName, password, secret, alternateUrl, publicKey);
+            merchantSite2 = new MerchantSite(userName2, password2, secret2, alternateUrl2, publicKey2);
         } else if ((baseUrl != null) && (baseUrl2 != null)) {
-            ApiClient.SetUp(userName, password, secret, baseUrl);
-            ApiClient.SetUp(userName2, password2, secret2, baseUrl2);
+            ApiClient.SetUp(userName, password, secret, publicKey, baseUrl);
+            ApiClient.SetUp(userName2, password2, secret2, publicKey2, baseUrl2);
 
-            merchantSite1 = new MerchantSite(userName, password, secret, baseUrl);
-            merchantSite2 = new MerchantSite(userName2, password2, secret2, baseUrl2);
+            merchantSite1 = new MerchantSite(userName, password, secret, baseUrl, publicKey);
+            merchantSite2 = new MerchantSite(userName2, password2, secret2, baseUrl2, publicKey);
         }
     }
 

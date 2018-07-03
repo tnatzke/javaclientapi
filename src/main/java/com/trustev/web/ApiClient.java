@@ -1,12 +1,15 @@
 package com.trustev.web;
 
+import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.net.ssl.*;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.MediaType;
 
@@ -55,7 +58,34 @@ public class ApiClient {
                 url = "https://app-eu.trustev.com/api/v2.0";
             }
 
-            merchantSites.put(userName, new MerchantSite(userName, password, secret, url));
+            merchantSites.put(userName, new MerchantSite(userName, password, secret, url, ""));
+        }
+
+    }
+
+    /**
+     * Initialize the Trustev class by passing in your UserName, Secret and Password.
+     * If you do not have this information, please contact our Integration Team - integrate@trustev.com
+     *
+     * @param userName Your Trustev Username
+     * @param password Your Trustev Password
+     * @param secret   Your Trustev Secret
+     * @param publicKey  Your Trustev Public Key
+     * @param baseUrl  The base url for the api calls (either US or EU)
+     */
+    public static void SetUp(String userName, String password, String secret, String publicKey, BaseUrl baseUrl) {
+        if (!hasMerchantSite(userName)) {
+
+            String url = "";
+
+            //Ensure that the baseUrl which the client provides is either US or EU
+            if (baseUrl.equals(BaseUrl.US)) {
+                url = "https://app.trustev.com/api/v2.0";
+            } else {
+                url = "https://app-eu.trustev.com/api/v2.0";
+            }
+
+            merchantSites.put(userName, new MerchantSite(userName, password, secret, url, publicKey));
         }
 
     }
@@ -70,7 +100,21 @@ public class ApiClient {
      * @param baseUrl  A url string specifying base url for the api calls
      */
     public static void SetUp(String userName, String password, String secret, String baseUrl) {
-        merchantSites.put(userName, new MerchantSite(userName, password, secret, baseUrl));
+        merchantSites.put(userName, new MerchantSite(userName, password, secret, baseUrl, ""));
+    }
+
+    /**
+     * Initialize the Trustev class by passing in your UserName, Secret and Password.
+     * If you do not have this information, please contact our Integration Team - integrate@trustev.com
+     *
+     * @param userName Your Trustev Username
+     * @param password Your Trustev Password
+     * @param secret   Your Trustev Secret
+     * @param publicKey   Your Public Key
+     * @param baseUrl  A url string specifying base url for the api calls
+     */
+    public static void SetUp(String userName, String password, String secret, String publicKey, String baseUrl) {
+        merchantSites.put(userName, new MerchantSite(userName, password, secret, baseUrl, publicKey));
     }
 
     /**
@@ -245,6 +289,73 @@ public class ApiClient {
         DetailedDecision response = (DetailedDecision) PerformHttpCall(url, HttpMethod.GET, DetailedDecision.class, null, true);
         return response;
     }
+
+    /**
+     * Use this endpoint and HTTP method to create a new Session.
+     *
+     * @param request Session request object
+     * @param userName The merchant site username that the request is being made by
+     * @throws TrustevApiException A Custom Trustev Api Exception
+     */
+    public static Session postSession(Session request, String userName) throws TrustevApiException {
+        String url = "/session";
+        Session response = (Session) PerformHttpCall(url, HttpMethod.POST, Session.class, request, true, userName);
+        return response;
+    }
+
+    /**
+     * Use this endpoint and HTTP method to create a new Session.
+     *
+     * @param request Session request object
+     * @throws TrustevApiException A Custom Trustev Api Exception
+     */
+    public static Session postSession(Session request) throws TrustevApiException {
+        String url = "/session";
+        Session response = (Session) PerformHttpCall(url, HttpMethod.POST, Session.class, request, true);
+        return response;
+    }
+
+    /**
+     * Use this endpoint and HTTP method to create a Detail on an existing Session
+     *
+     * @param request Detail request object
+     * @param sessionId SessionId
+     * @param userName The merchant site username that the request is being made by
+     * @throws TrustevApiException A Custom Trustev Api Exception
+     */
+    public static Detail postDetail(Detail request, String sessionId, String userName) throws TrustevApiException {
+        String url = "/session/" + sessionId + "/detail";
+        Detail response = (Detail) PerformHttpCall(url, HttpMethod.POST, Detail.class, request, true, userName);
+        return response;
+    }
+
+    /**
+     * Use this endpoint and HTTP method to create a Detail on an existing Session
+     *
+     * @param request Detail request object
+     * @param sessionId SessionId
+     * @throws TrustevApiException A Custom Trustev Api Exception
+     */
+    public static Detail postDetail(Detail request, String sessionId) throws TrustevApiException {
+        String url = "/session/" + sessionId + "/detail";
+        Detail response = (Detail) PerformHttpCall(url, HttpMethod.POST, Detail.class, request, true);
+        return response;
+    }
+
+    /**
+     * Use this endpoint and HTTP method to Answer KBA Questions
+     *
+     * @param caseId The Id of a Case which you have already posted to the TrustevClient API.
+     * @param request KBAResult request object
+     * @return digital auth object
+     * @throws TrustevApiException A Custom Trustev Api Exception
+     */
+    public static KBAResult postKba(String caseId, KBAResult request) throws TrustevApiException {
+        String url = "/case/"+ caseId+"/authentication/kba" ;
+        KBAResult response = (KBAResult) PerformHttpCall(url, HttpMethod.POST, KBAResult.class, request, true);
+        return response;
+    }
+
     /**
      * Use this endpoint and HTTP method to Request OR Regenerate a OTP to a previously created Trustev Case.
      *
@@ -1208,6 +1319,13 @@ public class ApiClient {
 
         DefaultClientConfig defaultClientConfig = new DefaultClientConfig();
         defaultClientConfig.getClasses().add(JacksonJsonProvider.class);
+
+
+
+        disableSslVerification();
+
+
+
         Client client = Client.create(defaultClientConfig);
 
         if (merchantSites.size() >= 1 && hasMerchantSite(userName)) {
@@ -1217,7 +1335,16 @@ public class ApiClient {
             Builder resourceBuilder = resource.getRequestBuilder();
 
             if (isAuthenticationNeeded) {
-                resourceBuilder = resourceBuilder.header("X-Authorization", String.format("%1$s %2$s", userName, getApiToken(userName)));
+                if(uriPath.contains("/session")){
+                    if (merchantSite.getPublicKey() == null || merchantSite.getPublicKey().equals(""))
+                        throw new TrustevApiException(401, "You need to set your public key if you want to post a Session. This can be done via the SetUp method");
+
+                    resourceBuilder = resourceBuilder.header("X-PublicKey", merchantSite.getPublicKey());
+                }
+                else{
+                    resourceBuilder = resourceBuilder.header("X-Authorization", String.format("%1$s %2$s", userName, getApiToken(userName)));
+                }
+
             }
 
             resourceBuilder = resourceBuilder.accept(MediaType.APPLICATION_JSON);
@@ -1384,6 +1511,42 @@ public class ApiClient {
         private String apiToken;
         private Date expireAt;
         private String credentialType;
+    }
+
+    private static void disableSslVerification() {
+        try
+        {
+            // Create a trust manager that does not validate certificate chains
+            TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                }
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                }
+            }
+            };
+
+            // Install the all-trusting trust manager
+            SSLContext sc = SSLContext.getInstance("SSL");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+
+            // Create all-trusting host name verifier
+            HostnameVerifier allHostsValid = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+
+            // Install the all-trusting host verifier
+            HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
     }
 
 }

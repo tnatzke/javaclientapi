@@ -5,10 +5,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Properties;
-import java.util.UUID;
+import java.util.*;
+
 import com.trustev.domain.entities.*;
 import org.junit.After;
 import org.junit.Before;
@@ -42,6 +40,7 @@ public class TrustevClientTest {
     public static String userName;
     public static String password;
     public static String secret;
+    public static String publicKey;
     public static BaseUrl baseUrl;
     public static String alternateUrl;
 
@@ -52,6 +51,7 @@ public class TrustevClientTest {
         userName = System.getProperty("userName");
         password = System.getProperty("password");
         secret = System.getProperty("secret");
+        publicKey = System.getProperty("publicKey");
         alternateUrl = System.getProperty("altUrl");
 
         String baseUrlString;
@@ -83,6 +83,7 @@ public class TrustevClientTest {
                 userName = prop.getProperty("userName");
                 password = prop.getProperty("password");
                 secret = prop.getProperty("secret");
+                publicKey = prop.getProperty("publicKey");
                 alternateUrl = prop.getProperty("altUrl");
                 baseUrlString = prop.getProperty("url");
 
@@ -107,10 +108,34 @@ public class TrustevClientTest {
         ApiClient.removeAllMerchantSites();
 
         if (alternateUrl != null && alternateUrl != "") {
-            ApiClient.SetUp(userName, password, secret, alternateUrl);
+            ApiClient.SetUp(userName, password, secret, publicKey, alternateUrl);
         } else if (baseUrl != null) {
-            ApiClient.SetUp(userName, password, secret, baseUrl);
+            ApiClient.SetUp(userName, password, secret, publicKey, baseUrl);
         }
+    }
+
+    @Test
+    public void testPostSession() throws TrustevApiException {
+        Session session = new Session();
+        session.setSessionType(SessionType.Broker);
+
+        Session responseSession = ApiClient.postSession(session);
+
+        assertNotNull(responseSession.getSessionId());
+        assertEquals(SessionType.Broker, responseSession.getSessionType());
+    }
+
+    @Test
+    public void testPostDetail() throws TrustevApiException {
+        Session session = new Session();
+        Session responseSession = ApiClient.postSession(session);
+
+        Detail detail = new Detail();
+        detail.setBrowser("DuckDuckGo");
+        Detail responseDetail = ApiClient.postDetail(detail, responseSession.getSessionId());
+
+
+        assertEquals("DuckDuckGo", responseDetail.getBrowser());
     }
 
     @Test
@@ -614,6 +639,24 @@ public class TrustevClientTest {
 
 
     /***************************End OTP Tests******************************/
+
+    /*****************************KBA Tests***************************/
+    @Test
+    public void testSentKba() throws TrustevApiException {
+        Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+        Case returnKase = ApiClient.postCase(kase);
+
+        DetailedDecision detailedDecision = ApiClient.getDetailedDecision(returnKase.getId());
+
+        KBAResult kbaResult = detailedDecision.getAuthentication().getKba();
+
+        for (QuestionsResult question : kbaResult.getQuestions()) {
+            question.getChoices().get(0).setAnswer(true);
+        }
+
+        KBAResult results = ApiClient.postKba(kase.getId(), detailedDecision.getAuthentication().getKba());
+    }
+    /***************************End KBA Tests******************************/
 
     /*****************************Customer Object Tests**********************************/
     @Test
