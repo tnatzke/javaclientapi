@@ -1,8 +1,8 @@
 package com.trustev.domain.entities;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.UUID;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -28,6 +28,14 @@ public class Case extends BaseObject{
 	 */
 	@JsonCreator
 	public Case(@JsonProperty("SessionId")UUID sessionId, @JsonProperty("CaseNumber") String caseNumber) throws TrustevApiException {
+
+		Date caseTimeStamp = formatDateToUTC();
+
+		if (caseTimeStamp != null)
+		{
+			this.timestamp = caseTimeStamp;
+		}
+
 		if (sessionId == null) {
 			throw new TrustevApiException(400, "Session ID cannot be null");
 		}
@@ -228,4 +236,21 @@ public class Case extends BaseObject{
 	private String locationConsentId;
 
 	private Fulfilment fulfilment;
+
+	public Date formatDateToUTC() {
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String dateStr = sdf.format(date);
+
+		try {
+			return sdf.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }
