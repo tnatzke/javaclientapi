@@ -45,6 +45,7 @@ public class TrustevClientTest {
     public static BaseUrl baseUrl;
     public static String alternateUrl;
 
+
     @BeforeClass
     public static void SetUpClass() throws Exception {
 
