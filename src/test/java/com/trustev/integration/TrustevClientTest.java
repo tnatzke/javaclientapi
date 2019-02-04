@@ -461,12 +461,14 @@ public class TrustevClientTest {
         customer.setFirstName("JohnPass");
         customer.setLastName("DoePass");
 		
-		// This email is greylisted
+		// This email is IsEmailGreylisted
 		Email email = new Email();
         email.setEmailAddress("integrationtestfail@greylist.com");
-		
-		customer.setEmail(email);
-        kase.setCustomer(customer);
+        Collection<Email> emails = new LinkedList<Email>();
+
+        emails.add(email);
+        customer.setEmail(emails);
+		kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
 
@@ -486,11 +488,12 @@ public class TrustevClientTest {
         customer.setLastName("DoeFail");
 		
 		// This email is blacklist, requires IsEmailblacklist
-		Email email = new Email();
+        Email email = new Email();
         email.setEmailAddress("integrationtestfail@blacklist.com");
-		
-		customer.setEmail(email);
-		
+        Collection<Email> emails = new LinkedList<Email>();
+
+        emails.add(email);
+        customer.setEmail(emails);
         kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
