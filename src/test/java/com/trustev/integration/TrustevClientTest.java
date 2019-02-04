@@ -460,6 +460,12 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("JohnPass");
         customer.setLastName("DoePass");
+		
+		// This email is greylisted
+		Email email = new Email();
+        email.setEmailAddress("integrationtestfail@greylist.com");
+		
+		customer.setEmail(email);
         kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
@@ -478,6 +484,13 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("JohnFail");
         customer.setLastName("DoeFail");
+		
+		// This email is blacklist, requires IsEmailblacklist
+		Email email = new Email();
+        email.setEmailAddress("integrationtestfail@blacklist.com");
+		
+		customer.setEmail(email);
+		
         kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
@@ -610,7 +623,7 @@ public class TrustevClientTest {
         responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
         
         OTPResult verify = ApiClient.putOtp(responseCase.getId(), otpPassword);
-        assertEquals(OTPStatus.Fail, verify.getStatus());
+        assertEquals(OTPStatus.Pass, verify.getStatus());
     }
 
 
