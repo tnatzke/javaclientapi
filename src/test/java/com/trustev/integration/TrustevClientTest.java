@@ -564,7 +564,7 @@ public class TrustevClientTest {
         customer.setLastName("Doe");
         
         // change this to a correct number
-        customer.setPhoneNumber("353878767543");
+        customer.setPhoneNumber("00353123445678");
 
         // This email is Greylist, requires IsEmailGreylist
         Email email = new Email();
@@ -604,7 +604,7 @@ public class TrustevClientTest {
         customer.setLastName("Doe");
         
         // change this to a correct number
-        customer.setPhoneNumber("353878767543");
+        customer.setPhoneNumber("00353123445678");
         // This email is Greylist, requires IsEmailGreylist
         Email email = new Email();
         email.setEmailAddress("integrationtestfail@greylist.com");
