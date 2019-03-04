@@ -565,6 +565,14 @@ public class TrustevClientTest {
         
         // change this to a correct number
         customer.setPhoneNumber("353878767543");
+
+        // This email is Greylist, requires IsEmailGreylist
+        Email email = new Email();
+        email.setEmailAddress("integrationtestfail@greylist.com");
+        Collection<Email> emails = new LinkedList<Email>();
+
+        emails.add(email);
+        customer.setEmail(emails);
         kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
@@ -597,6 +605,13 @@ public class TrustevClientTest {
         
         // change this to a correct number
         customer.setPhoneNumber("353878767543");
+        // This email is Greylist, requires IsEmailGreylist
+        Email email = new Email();
+        email.setEmailAddress("integrationtestfail@greylist.com");
+        Collection<Email> emails = new LinkedList<Email>();
+
+        emails.add(email);
+        customer.setEmail(emails);
         kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
