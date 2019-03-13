@@ -2,6 +2,8 @@ package com.trustev.domain.entities;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 abstract class BaseObject {
@@ -20,8 +22,13 @@ abstract class BaseObject {
 	}
 
 	static String FormatTimeStamp(Date d) {
-		return (d == null) ? null : new SimpleDateFormat(
-				"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(d);
+		if (d == null) {
+			return null;
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+		// All the datetime's should be using UTC
+		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return sdf.format(d);
 	}
 
 	@Override
