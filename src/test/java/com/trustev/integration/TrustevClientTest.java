@@ -1146,6 +1146,23 @@ public class TrustevClientTest {
         assertEquals(400, responseCode);
     }
 
+    @Test
+    public void testPostPaymentTypeEnums() throws TrustevApiException {
+
+        for (PaymentType item : PaymentType.values()) {
+
+            Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
+            Case responseCase = ApiClient.postCase(kase);
+
+            Payment payment = new Payment();
+            payment.setPaymentType(item);
+            Payment returnPayment = ApiClient.postPayment(responseCase.getId(), payment);
+
+        assertEquals(payment.getPaymentType(), returnPayment.getPaymentType());
+
+        }
+    }
+
     /*****************************End of Payment Object Tests*********************************/
 
     /*****************************TransactionAddress Object Tests*****************************/
