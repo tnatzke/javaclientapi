@@ -1,190 +1,199 @@
 package com.trustev.domain.entities;
+
 import java.util.Collection;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
+import java.util.function.Function;
 
 /**
  * The Detailed decision Raw data object
  */
-@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RawData{
+public class RawData extends Base<RawData> {
 
-	@JsonProperty("CaseType")
-	private CaseType caseType;
+    private CaseType caseType;
+    private String deviceTag;
+    private String trustevCustomerId;
+    private String browser;
+    private String os;
+    private String navigatorOsCpu;
+    private String navigatorLanguage;
+    private String navigatorPlugins;
+    private String screenWidth;
+    private String screenHeight;
+    private String screenColorDepth;
+    private Collection<RawDataIPAddress> ipAddresses;
+    private RawDataBINInformation binInformation;
+    private RawDataCustomer customer;
+    private RawDataTransaction transaction;
+    private RawDataLocation location;
 
-	@JsonProperty("DeviceTag")
-	private String deviceTag;
+    @JsonProperty("CaseType")
+    public CaseType getCaseType() {
+        return caseType;
+    }
 
-	@JsonProperty("TrustevCustomerId")
-	private String trustevCustomerId;
+    public void setCaseType(CaseType caseType) {
+        this.caseType = caseType;
+    }
 
-	@JsonProperty("Browser")
-	private String browser;
 
-	@JsonProperty("OS")
-	private String os;
+    @JsonProperty("DeviceTag")
+    public String getDeviceTag() {
+        return deviceTag;
+    }
 
-	@JsonProperty("NavigatorOscpu")
-	private String navigatorOsCpu;
+    public void setDeviceTag(String deviceTag) {
+        this.deviceTag = deviceTag;
+    }
 
-	@JsonProperty("NavigatorLanguage")
-	private String navigatorLanguage;
+    @JsonProperty("TrustevCustomerId")
+    public String getTrustevCustomerId() {
+        return trustevCustomerId;
+    }
 
-	@JsonProperty("NavigatorPlugins")
-	private String navigatorPlugins;
+    public void setTrustevCustomerId(String trustevCustomerId) {
+        this.trustevCustomerId = trustevCustomerId;
+    }
 
-	@JsonProperty("ScreenWidth")
-	private String screenWidth;
+    @JsonProperty("Browser")
+    public String getBrowser() {
+        return browser;
+    }
 
-	@JsonProperty("ScreenHeight")
-	private String screenHeight;
+    public void setBrowser(String browser) {
+        this.browser = browser;
+    }
 
-	@JsonProperty("ScreenColorDepth")
-	private String screenColorDepth;
+    @JsonProperty("OS")
+    public String getOs() {
+        return os;
+    }
 
-	@JsonProperty("IPAddresses")
-	private Collection<RawDataIPAddress> ipAddresses;
+    public void setOs(String os) {
+        this.os = os;
+    }
 
-	@JsonProperty("BINInformation")
-	private RawDataBINInformation binInformation;
+    @JsonProperty("NavigatorOscpu")
+    public String getNavigatorOscpu() {
+        return navigatorOsCpu;
+    }
 
-	@JsonProperty("Customer")
-	private RawDataCustomer customer;
+    public void setNavigatorOscpu(String navigatorOsCpu) {
+        this.navigatorOsCpu = navigatorOsCpu;
+    }
 
-	@JsonProperty("Transaction")
-	private RawDataTransaction transaction;
-	
-	@JsonProperty("Location")
-	private RawDataLocation location;
+    @JsonProperty("NavigatorLanguage")
+    public String getNavigatorLanguage() {
+        return navigatorLanguage;
+    }
 
-	public CaseType getCaseType() {
-		return caseType;
-	}
+    public void setNavigatorLanguage(String navigatorLanguage) {
+        this.navigatorLanguage = navigatorLanguage;
+    }
 
-	public void setCaseType(CaseType caseType) {
-		this.caseType = caseType;
-	}
+    @JsonProperty("NavigatorPlugins")
+    public String getNavigatorPlugins() {
+        return navigatorPlugins;
+    }
 
-	public String getDeviceTag() {
-		return deviceTag;
-	}
+    public void setNavigatorPlugins(String navigatorPlugins) {
+        this.navigatorPlugins = navigatorPlugins;
+    }
 
-	public void setDeviceTag(String deviceTag) {
-		this.deviceTag = deviceTag;
-	}
 
-	public String getTrustevCustomerId() {
-		return trustevCustomerId;
-	}
+    @JsonProperty("ScreenWidth")
+    public String getScreenWidth() {
+        return screenWidth;
+    }
 
-	public void setTrustevCustomerId(String trustevCustomerId) {
-		this.trustevCustomerId = trustevCustomerId;
-	}
+    public void setScreenWidth(String screenWidth) {
+        this.screenWidth = screenWidth;
+    }
 
-	public String getBrowser() {
-		return browser;
-	}
+    @JsonProperty("ScreenHeight")
+    public String getScreenHeight() {
+        return screenHeight;
+    }
 
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
+    public void setScreenHeight(String screenHeight) {
+        this.screenHeight = screenHeight;
+    }
 
-	public String getOs() {
-		return os;
-	}
+    @JsonProperty("ScreenColorDepth")
+    public String getScreenColorDepth() {
+        return screenColorDepth;
+    }
 
-	public void setOs(String os) {
-		this.os = os;
-	}
+    public void setScreenColorDepth(String screenColorDepth) {
+        this.screenColorDepth = screenColorDepth;
+    }
 
-	public String getNavigatorOscpu() {
-		return navigatorOsCpu;
-	}
+    @JsonProperty("IPAddresses")
+    public Collection<RawDataIPAddress> getIpAddresses() {
+        return ipAddresses;
+    }
 
-	public void setNavigatorOscpu(String navigatorOsCpu) {
-		this.navigatorOsCpu = navigatorOsCpu;
-	}
+    public void setIpAddresses(Collection<RawDataIPAddress> ipAddresses) {
+        this.ipAddresses = ipAddresses;
+    }
 
-	public String getNavigatorLanguage() {
-		return navigatorLanguage;
-	}
+    @JsonProperty("BINInformation")
+    public RawDataBINInformation getBinInformation() {
+        return binInformation;
+    }
 
-	public void setNavigatorLanguage(String navigatorLanguage) {
-		this.navigatorLanguage = navigatorLanguage;
-	}
+    public void setBinInformation(RawDataBINInformation binInformation) {
+        this.binInformation = binInformation;
+    }
 
-	public String getNavigatorPlugins() {
-		return navigatorPlugins;
-	}
+    @JsonProperty("Customer")
+    public RawDataCustomer getCustomer() {
+        return customer;
+    }
 
-	public void setNavigatorPlugins(String navigatorPlugins) {
-		this.navigatorPlugins = navigatorPlugins;
-	}
+    public void setCustomer(RawDataCustomer customer) {
+        this.customer = customer;
+    }
 
-	public String getScreenWidth() {
-		return screenWidth;
-	}
+    @JsonProperty("Transaction")
+    public RawDataTransaction getTransaction() {
+        return transaction;
+    }
 
-	public void setScreenWidth(String screenWidth) {
-		this.screenWidth = screenWidth;
-	}
+    public void setTransaction(RawDataTransaction transaction) {
+        this.transaction = transaction;
+    }
 
-	public String getScreenHeight() {
-		return screenHeight;
-	}
+    @JsonProperty("Location")
+    public RawDataLocation getLocation() {
+        return location;
+    }
 
-	public void setScreenHeight(String screenHeight) {
-		this.screenHeight = screenHeight;
-	}
+    public void setLocation(RawDataLocation location) {
+        this.location = location;
+    }
 
-	public String getScreenColorDepth() {
-		return screenColorDepth;
-	}
-
-	public void setScreenColorDepth(String screenColorDepth) {
-		this.screenColorDepth = screenColorDepth;
-	}
-
-	public Collection<RawDataIPAddress> getIpAddresses() {
-		return ipAddresses;
-	}
-
-	public void setIpAddresses(Collection<RawDataIPAddress> ipAddresses) {
-		this.ipAddresses = ipAddresses;
-	}
-
-	public RawDataBINInformation getBinInformation() {
-		return binInformation;
-	}
-
-	public void setBinInformation(RawDataBINInformation binInformation) {
-		this.binInformation = binInformation;
-	}
-
-	public RawDataCustomer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(RawDataCustomer customer) {
-		this.customer = customer;
-	}
-
-	public RawDataTransaction getTransaction() {
-		return transaction;
-	}
-
-	public void setTransaction(RawDataTransaction transaction) {
-		this.transaction = transaction;
-	}
-
-	public RawDataLocation getLocation() {
-		return location;
-	}
-
-	public void setLocation(RawDataLocation location) {
-		this.location = location;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<RawData, Comparable>> props) {
+        props.add(RawData::getCaseType);
+        props.add(RawData::getDeviceTag);
+        props.add(RawData::getTrustevCustomerId);
+        props.add(RawData::getBrowser);
+        props.add(RawData::getOs);
+        props.add(RawData::getNavigatorLanguage);
+        props.add(RawData::getNavigatorPlugins);
+        props.add(RawData::getScreenWidth);
+        props.add(RawData::getScreenHeight);
+        props.add(RawData::getScreenColorDepth);
+        props.add(RawData::getBinInformation);
+        props.add(RawData::getCustomer);
+        props.add(RawData::getTransaction);
+        props.add(RawData::getLocation);
+        super.buildSignificationProperties(props);
+    }
 }

@@ -1,74 +1,82 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedDataBIN
-{
-	@JsonProperty("DoesMatchCustomerBillingAddressCountry")
-	private boolean doesMatchCustomerBillingAddressCountry;
+public class ComputedDataBIN extends Base<ComputedDataBIN> {
 
-	@JsonProperty("DoesMatchCustomerDeliveryAddressCountry")
-	private boolean doesMatchCustomerDeliveryAddressCountry;
+    private boolean doesMatchCustomerBillingAddressCountry;
+    private boolean doesMatchCustomerDeliveryAddressCountry;
+    private boolean doesMatchTransactionBillingAddressCountry;
+    private boolean doesMatchTransactionDeliveryAddressCountry;
+    private boolean doesMatchIPCountry;
+    private boolean isCountryDomestic;
 
-	@JsonProperty("DoesMatchTransactionBillingAddressCountry")
-	private boolean doesMatchTransactionBillingAddressCountry;
+    @JsonProperty("DoesMatchCustomerBillingAddressCountry")
+    public boolean isDoesMatchCustomerBillingAddressCountry() {
+        return doesMatchCustomerBillingAddressCountry;
+    }
 
-	@JsonProperty("DoesMatchTransactionDeliveryAddressCountry")
-	private boolean doesMatchTransactionDeliveryAddressCountry;
+    public void setDoesMatchCustomerBillingAddressCountry(boolean doesMatchCustomerBillingAddressCountry) {
+        this.doesMatchCustomerBillingAddressCountry = doesMatchCustomerBillingAddressCountry;
+    }
 
-	@JsonProperty("DoesMatchIPCountry")
-	private boolean doesMatchIPCountry;
+    @JsonProperty("DoesMatchCustomerDeliveryAddressCountry")
+    public boolean isDoesMatchCustomerDeliveryAddressCountry() {
+        return doesMatchCustomerDeliveryAddressCountry;
+    }
 
-	@JsonProperty("IsCountryDomestic")
-	private boolean isCountryDomestic;
+    public void setDoesMatchCustomerDeliveryAddressCountry(boolean doesMatchCustomerDeliveryAddressCountry) {
+        this.doesMatchCustomerDeliveryAddressCountry = doesMatchCustomerDeliveryAddressCountry;
+    }
 
-	public boolean isDoesMatchCustomerBillingAddressCountry() {
-		return doesMatchCustomerBillingAddressCountry;
-	}
+    @JsonProperty("DoesMatchTransactionBillingAddressCountry")
+    public boolean isDoesMatchTransactionBillingAddressCountry() {
+        return doesMatchTransactionBillingAddressCountry;
+    }
 
-	public void setDoesMatchCustomerBillingAddressCountry(boolean doesMatchCustomerBillingAddressCountry) {
-		this.doesMatchCustomerBillingAddressCountry = doesMatchCustomerBillingAddressCountry;
-	}
+    public void setDoesMatchTransactionBillingAddressCountry(boolean doesMatchTransactionBillingAddressCountry) {
+        this.doesMatchTransactionBillingAddressCountry = doesMatchTransactionBillingAddressCountry;
+    }
 
-	public boolean isDoesMatchCustomerDeliveryAddressCountry() {
-		return doesMatchCustomerDeliveryAddressCountry;
-	}
+    @JsonProperty("DoesMatchTransactionDeliveryAddressCountry")
+    public boolean isDoesMatchTransactionDeliveryAddressCountry() {
+        return doesMatchTransactionDeliveryAddressCountry;
+    }
 
-	public void setDoesMatchCustomerDeliveryAddressCountry(boolean doesMatchCustomerDeliveryAddressCountry) {
-		this.doesMatchCustomerDeliveryAddressCountry = doesMatchCustomerDeliveryAddressCountry;
-	}
+    public void setDoesMatchTransactionDeliveryAddressCountry(boolean doesMatchTransactionDeliveryAddressCountry) {
+        this.doesMatchTransactionDeliveryAddressCountry = doesMatchTransactionDeliveryAddressCountry;
+    }
 
-	public boolean isDoesMatchTransactionBillingAddressCountry() {
-		return doesMatchTransactionBillingAddressCountry;
-	}
+    @JsonProperty("DoesMatchIPCountry")
+    public boolean isDoesMatchIPCountry() {
+        return doesMatchIPCountry;
+    }
 
-	public void setDoesMatchTransactionBillingAddressCountry(boolean doesMatchTransactionBillingAddressCountry) {
-		this.doesMatchTransactionBillingAddressCountry = doesMatchTransactionBillingAddressCountry;
-	}
+    public void setDoesMatchIPCountry(boolean doesMatchIPCountry) {
+        this.doesMatchIPCountry = doesMatchIPCountry;
+    }
 
-	public boolean isDoesMatchTransactionDeliveryAddressCountry() {
-		return doesMatchTransactionDeliveryAddressCountry;
-	}
+    @JsonProperty("IsCountryDomestic")
+    public boolean isCountryDomestic() {
+        return isCountryDomestic;
+    }
 
-	public void setDoesMatchTransactionDeliveryAddressCountry(boolean doesMatchTransactionDeliveryAddressCountry) {
-		this.doesMatchTransactionDeliveryAddressCountry = doesMatchTransactionDeliveryAddressCountry;
-	}
+    public void setCountryDomestic(boolean isCountryDomestic) {
+        this.isCountryDomestic = isCountryDomestic;
+    }
 
-	public boolean isDoesMatchIPCountry() {
-		return doesMatchIPCountry;
-	}
-
-	public void setDoesMatchIPCountry(boolean doesMatchIPCountry) {
-		this.doesMatchIPCountry = doesMatchIPCountry;
-	}
-
-	public boolean isCountryDomestic() {
-		return isCountryDomestic;
-	}
-
-	public void setCountryDomestic(boolean isCountryDomestic) {
-		this.isCountryDomestic = isCountryDomestic;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedDataBIN, Comparable>> props) {
+        props.add(ComputedDataBIN::isDoesMatchCustomerBillingAddressCountry);
+        props.add(ComputedDataBIN::isDoesMatchCustomerDeliveryAddressCountry);
+        props.add(ComputedDataBIN::isDoesMatchTransactionBillingAddressCountry);
+        props.add(ComputedDataBIN::isDoesMatchTransactionDeliveryAddressCountry);
+        props.add(ComputedDataBIN::isDoesMatchIPCountry);
+        props.add(ComputedDataBIN::isCountryDomestic);
+        super.buildSignificationProperties(props);
+    }
 }

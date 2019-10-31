@@ -1,8 +1,10 @@
 package com.trustev.web;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import com.trustev.domain.entities.otp.OTPLanguageEnum;
+import com.trustev.domain.entities.otp.OTPResult;
+import com.trustev.domain.entities.otp.OTPStatus;
+import com.trustev.domain.entities.otp.PhoneDeliveryType;
+import org.junit.*;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -10,10 +12,6 @@ import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
 import com.trustev.domain.entities.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import com.trustev.domain.entities.Address;
 import com.trustev.domain.entities.BaseUrl;
 import com.trustev.domain.entities.Case;
@@ -30,7 +28,7 @@ import com.trustev.domain.entities.Payment;
 import com.trustev.domain.entities.Transaction;
 import com.trustev.domain.entities.TransactionItem;
 import com.trustev.domain.exceptions.TrustevApiException;
-import com.trustev.web.ApiClient;
+import static org.junit.Assert.*;
 
 public class TrustevClientTest {
 
@@ -42,9 +40,9 @@ public class TrustevClientTest {
     public static String userName;
     public static String password;
     public static String secret;
+    public static String publicKey;
     public static BaseUrl baseUrl;
     public static String alternateUrl;
-
 
     @BeforeClass
     public static void SetUpClass() throws Exception {
@@ -54,6 +52,7 @@ public class TrustevClientTest {
         password = System.getProperty("password");
         secret = System.getProperty("secret");
         alternateUrl = System.getProperty("altUrl");
+        publicKey = System.getProperty("publicKey");
 
         String baseUrlString;
         if (alternateUrl == null) {
@@ -84,6 +83,7 @@ public class TrustevClientTest {
                 userName = prop.getProperty("userName");
                 password = prop.getProperty("password");
                 secret = prop.getProperty("secret");
+                publicKey = prop.getProperty("publicKey");
                 alternateUrl = prop.getProperty("altUrl");
                 baseUrlString = prop.getProperty("url");
 
@@ -108,9 +108,9 @@ public class TrustevClientTest {
         ApiClient.removeAllMerchantSites();
 
         if (alternateUrl != null && alternateUrl != "") {
-            ApiClient.SetUp(userName, password, secret, alternateUrl);
+            ApiClient.setUp(userName, password, secret, publicKey, alternateUrl);
         } else if (baseUrl != null) {
-            ApiClient.SetUp(userName, password, secret, baseUrl);
+            ApiClient.setUp(userName, password, secret, publicKey, baseUrl);
         }
     }
 
@@ -273,7 +273,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.Default, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeUnsecuredPersonalLoansMarketTypePost() throws TrustevApiException {
 
@@ -290,7 +290,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.UnsecuredPersonalLoans, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeCreditCardsMarketTypePost() throws TrustevApiException {
 
@@ -307,8 +307,8 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.CreditCards, responseCase.getMarketType());
     }
-    
-    
+
+
     @Test
     public void testApplicationCaseTypeMultiFamilyRentalScreeningMarketTypePost() throws TrustevApiException {
 
@@ -325,7 +325,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.MultiFamilyRentalScreening, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeAutoLendingMarketTypePost() throws TrustevApiException {
 
@@ -342,7 +342,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.AutoLending, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeShortTermAlternativeLendingMarketTypePost() throws TrustevApiException {
 
@@ -359,7 +359,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.ShortTermAlternativeLending, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeShortTermTelecomAndCommunicationsMarketTypePost() throws TrustevApiException {
 
@@ -376,7 +376,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.TelecomAndCommunications, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeInsuranceMarketTypePost() throws TrustevApiException {
 
@@ -393,7 +393,7 @@ public class TrustevClientTest {
         assertEquals(CaseType.Application, responseCase.getCaseType());
         assertEquals(MarketType.Insurance, responseCase.getMarketType());
     }
-    
+
     @Test
     public void testApplicationCaseTypeMortgageMarketTypePost() throws TrustevApiException {
 
@@ -460,15 +460,15 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("JohnPass");
         customer.setLastName("DoePass");
-		
-		// This email is IsEmailGreylisted
-		Email email = new Email();
+
+        // This email is IsEmailGreylisted
+        Email email = new Email();
         email.setEmailAddress("integrationtestfail@greylist.com");
         Collection<Email> emails = new LinkedList<Email>();
 
         emails.add(email);
         customer.setEmail(emails);
-		kase.setCustomer(customer);
+        kase.setCustomer(customer);
 
         Case responseCase = ApiClient.postCase(kase);
 
@@ -486,8 +486,8 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("JohnFail");
         customer.setLastName("DoeFail");
-		
-		// This email is blacklist, requires IsEmailblacklist
+
+        // This email is blacklist, requires IsEmailblacklist
         Email email = new Email();
         email.setEmailAddress("integrationtestfail@blacklist.com");
         Collection<Email> emails = new LinkedList<Email>();
@@ -562,7 +562,7 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        
+
         // change this to a correct number
         customer.setPhoneNumber("00353123445678");
 
@@ -580,18 +580,18 @@ public class TrustevClientTest {
         DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
         assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
         DigitalAuthenticationResult auth = new DigitalAuthenticationResult();
-        
+
         // update the casenumber to force another otp InProgress status
         responseCase.setCaseNumber("testOtpInProgress");
-        
+
         responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
-        
+
         OTPResult otp = new OTPResult(responseCase.getId());
         otp.setDeliveryType(PhoneDeliveryType.Sms);
         otp.setLanguage(OTPLanguageEnum.EN);
-        
+
         OTPResult check = ApiClient.postOtp(responseCase.getId(), otp);
-        assertEquals(check.getStatus(),OTPStatus.InProgress);
+        assertEquals(check.getStatus(), OTPStatus.InProgress);
     }
 
 
@@ -602,7 +602,7 @@ public class TrustevClientTest {
         Customer customer = new Customer();
         customer.setFirstName("John");
         customer.setLastName("Doe");
-        
+
         // change this to a correct number
         customer.setPhoneNumber("00353123445678");
         // This email is Greylist, requires IsEmailGreylist
@@ -618,11 +618,11 @@ public class TrustevClientTest {
 
         DetailedDecision decision = ApiClient.getDetailedDecision(responseCase.getId());
         assertEquals(decision.getAuthentication().getOtp().getStatus(), OTPStatus.Offered);
-        
+
         // update the casenumber to force another otp InProgress status
         responseCase.setCaseNumber("testCaseNumberOTPInProgress");
         responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
-        
+
         OTPResult otp = new OTPResult(responseCase.getId());
         otp.setDeliveryType(PhoneDeliveryType.Sms);
         otp.setLanguage(OTPLanguageEnum.EN);
@@ -635,11 +635,11 @@ public class TrustevClientTest {
         otpPassword.setLanguage(OTPLanguageEnum.EN);
         otpPassword.setStatus(OTPStatus.InProgress);
         otpPassword.setPasscode("12345");
-        
+
         // update the casenumber to force another otp failed status
         responseCase.setCaseNumber("testCaseNumberOTPFailed");
         responseCase = ApiClient.updateCase(responseCase, responseCase.getId());
-        
+
         OTPResult verify = ApiClient.putOtp(responseCase.getId(), otpPassword);
         assertEquals(OTPStatus.Pass, verify.getStatus());
     }
@@ -1158,7 +1158,7 @@ public class TrustevClientTest {
             payment.setPaymentType(item);
             Payment returnPayment = ApiClient.postPayment(responseCase.getId(), payment);
 
-        assertEquals(payment.getPaymentType(), returnPayment.getPaymentType());
+            assertEquals(payment.getPaymentType(), returnPayment.getPaymentType());
 
         }
     }
@@ -1350,5 +1350,12 @@ public class TrustevClientTest {
         }
         assertEquals(404, responseCode);
     }
+
     /*****************************End of TransactionItem Object Tests*****************************/
+
+    @Test
+    public void testGetSession() throws TrustevApiException {
+        Session session = ApiClient.postSession();
+        Assert.assertNotNull("Failed to fetch the session Id", session.getSessionId());
+    }
 }

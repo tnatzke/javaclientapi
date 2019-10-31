@@ -1,138 +1,125 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedData
-{
-	@JsonProperty("CaseType")
-	private CaseType caseType;
+public class ComputedData extends Base<ComputedData> {
+    private CaseType caseType;
+    private ComputedDataVelocity velocity;
+    private ComputedDataList blackList;
+    private ComputedDataList greyList;
+    private ComputedDataList whiteList;
+    private ComputedDataCustomer customer;
+    private ComputedDataTransaction transaction;
+    private ComputedDataLocation location;
+    private ComputedDataPhone phone;
+    private ComputedDataAccount account;
 
-	@JsonProperty("Velocity")
-	private ComputedDataVelocity velocity;
+    @JsonProperty("CaseType")
+    public CaseType getCaseType() {
+        return caseType;
+    }
 
-	@JsonProperty("BlackList")
-	private ComputedDataList blackList;
+    public void setCaseType(CaseType caseType) {
+        this.caseType = caseType;
+    }
 
-	@JsonProperty("GreyList")
-	private ComputedDataList greyList;
+    @JsonProperty("Velocity")
+    public ComputedDataVelocity getVelocity() {
+        return velocity;
+    }
 
-	@JsonProperty("WhiteList")
-	private ComputedDataList whiteList;
+    public void setVelocity(ComputedDataVelocity velocity) {
+        this.velocity = velocity;
+    }
 
-	@JsonProperty("Customer")
-	private ComputedDataCustomer customer;
+    @JsonProperty("BlackList")
+    public ComputedDataList getBlackList() {
+        return blackList;
+    }
 
-	@JsonProperty("Transaction")
-	private ComputedDataTransaction transaction;
+    public void setBlackList(ComputedDataList blackList) {
+        this.blackList = blackList;
+    }
 
-	@JsonProperty("Location")
-	private ComputedDataLocation location;
+    @JsonProperty("GreyList")
+    public ComputedDataList getGreyList() {
+        return greyList;
+    }
 
-	@JsonProperty("Phone")
-	private ComputedDataPhone phone;
+    public void setGreyList(ComputedDataList greyList) {
+        this.greyList = greyList;
+    }
 
-	@JsonProperty("Account")
-	private ComputedDataAccount account;
+    @JsonProperty("WhiteList")
+    public ComputedDataList getWhiteList() {
+        return whiteList;
+    }
 
+    public void setWhiteList(ComputedDataList whiteList) {
+        this.whiteList = whiteList;
+    }
 
-	public CaseType getCaseType() {
-		return caseType;
-	}
+    @JsonProperty("Customer")
+    public ComputedDataCustomer getCustomer() {
+        return customer;
+    }
 
+    public void setCustomer(ComputedDataCustomer customer) {
+        this.customer = customer;
+    }
 
-	public void setCaseType(CaseType caseType) {
-		this.caseType = caseType;
-	}
+    @JsonProperty("Transaction")
+    public ComputedDataTransaction getTransaction() {
+        return transaction;
+    }
 
+    public void setTransaction(ComputedDataTransaction transaction) {
+        this.transaction = transaction;
+    }
 
-	public ComputedDataVelocity getVelocity() {
-		return velocity;
-	}
+    @JsonProperty("Location")
+    public ComputedDataLocation getLocation() {
+        return location;
+    }
 
+    public void setLocation(ComputedDataLocation location) {
+        this.location = location;
+    }
 
-	public void setVelocity(ComputedDataVelocity velocity) {
-		this.velocity = velocity;
-	}
+    @JsonProperty("Phone")
+    public ComputedDataPhone getPhone() {
+        return phone;
+    }
 
+    public void setPhone(ComputedDataPhone phone) {
+        this.phone = phone;
+    }
 
-	public ComputedDataList getBlackList() {
-		return blackList;
-	}
+    @JsonProperty("Account")
+    public ComputedDataAccount getAccount() {
+        return account;
+    }
 
+    public void setAccount(ComputedDataAccount account) {
+        this.account = account;
+    }
 
-	public void setBlackList(ComputedDataList blackList) {
-		this.blackList = blackList;
-	}
-
-
-	public ComputedDataList getGreyList() {
-		return greyList;
-	}
-
-
-	public void setGreyList(ComputedDataList greyList) {
-		this.greyList = greyList;
-	}
-
-
-	public ComputedDataList getWhiteList() {
-		return whiteList;
-	}
-
-
-	public void setWhiteList(ComputedDataList whiteList) {
-		this.whiteList = whiteList;
-	}
-
-
-	public ComputedDataCustomer getCustomer() {
-		return customer;
-	}
-
-
-	public void setCustomer(ComputedDataCustomer customer) {
-		this.customer = customer;
-	}
-
-
-	public ComputedDataTransaction getTransaction() {
-		return transaction;
-	}
-
-
-	public void setTransaction(ComputedDataTransaction transaction) {
-		this.transaction = transaction;
-	}
-
-
-	public ComputedDataLocation getLocation() {
-		return location;
-	}
-
-
-	public void setLocation(ComputedDataLocation location) {
-		this.location = location;
-	}
-
-
-	public ComputedDataPhone getPhone() {
-		return phone;
-	}
-
-
-	public void setPhone(ComputedDataPhone phone) {
-		this.phone = phone;
-	}
-
-
-	public ComputedDataAccount getAccount() {
-		return account;
-	}
-
-
-	public void setAccount(ComputedDataAccount account) {
-		this.account = account;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedData, Comparable>> props) {
+        props.add(ComputedData::getCaseType);
+        props.add(ComputedData::getVelocity);
+        props.add(ComputedData::getBlackList);
+        props.add(ComputedData::getGreyList);
+        props.add(ComputedData::getWhiteList);
+        props.add(ComputedData::getCustomer);
+        props.add(ComputedData::getTransaction);
+        props.add(ComputedData::getLocation);
+        props.add(ComputedData::getPhone);
+        props.add(ComputedData::getAccount);
+        super.buildSignificationProperties(props);
+    }
 }

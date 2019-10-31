@@ -1,58 +1,46 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.trustev.domain.entities.kba.KBAResult;
+import com.trustev.domain.entities.otp.OTPResult;
 import java.util.Date;
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class DigitalAuthenticationResult extends BaseObject {
-    public DigitalAuthenticationResult(){
-        timestamp= new Date();
-    }
-    @JsonProperty("Id")
-    private String id;
+import java.util.List;
+import java.util.function.Function;
 
-    private Date timestamp;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class DigitalAuthenticationResult extends TimestampBase<DigitalAuthenticationResult> {
+
+    public DigitalAuthenticationResult() {
+        setTimestamp(new Date());
+    }
+
+    private OTPResult otp;
+    private KBAResult kba;
 
     @JsonProperty("OTP")
-    private OTPResult otp;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * @return Current Timestamp.
-     */
-    @JsonIgnore()
-    public Date getTimestamp() {
-        return timestamp;
-    }
-
-    @JsonProperty("Timestamp")
-    String getTimestampString() {
-        return FormatTimeStamp(timestamp);
-    }
-
-    /**
-     * @param timestamp Current Timestamp.
-     */
-    @JsonProperty("Timestamp")
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
-    }
-
-
     public OTPResult getOtp() {
         return otp;
     }
 
     public void setOtp(OTPResult otp) {
         this.otp = otp;
+    }
+
+    public KBAResult getKba() {
+        return this.kba;
+    }
+
+    @JsonProperty("KBA")
+    public void setKba(final KBAResult value) {
+        this.kba = value;
+    }
+
+    @Override
+    protected void buildSignificationProperties(List<Function<DigitalAuthenticationResult, Comparable>> props) {
+        props.add(DigitalAuthenticationResult::getOtp);
+        props.add(DigitalAuthenticationResult::getKba);
+        super.buildSignificationProperties(props);
     }
 }

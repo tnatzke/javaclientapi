@@ -1,63 +1,71 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DetailedDecision extends Decision{
-	
-	@JsonProperty("CaseNumber")
-	private String caseNumber;
-    
-	@JsonProperty("CaseId")
-	private String caseId;
-    
-	@JsonProperty("RawData")
-	private RawData rawData;
-    
-	@JsonProperty("ComputedData")
-	private ComputedData computedData;
-	@JsonProperty("Authentication")
-	private DigitalAuthenticationResult Authentication;
-	
-	public String getCaseNumber() {
-		return caseNumber;
-	}
+public class DetailedDecision extends Decision<DetailedDecision> {
 
-	public void setCaseNumber(String caseNumber) {
-		this.caseNumber = caseNumber;
-	}
+    private String caseNumber;
+    private String caseId;
+    private RawData rawData;
+    private ComputedData computedData;
+    private DigitalAuthenticationResult authentication;
 
-	public String getCaseId() {
-		return caseId;
-	}
+    @JsonProperty("CaseNumber")
+    public String getCaseNumber() {
+        return caseNumber;
+    }
 
-	public void setCaseId(String caseId) {
-		this.caseId = caseId;
-	}
+    public void setCaseNumber(final String value) {
+        this.caseNumber = value;
+    }
 
-	public RawData getRawData() {
-		return rawData;
-	}
+    @JsonProperty("CaseId")
+    public String getCaseId() {
+        return caseId;
+    }
 
-	public void setRawData(RawData rawData) {
-		this.rawData = rawData;
-	}
+    public void setCaseId(final String value) {
+        this.caseId = value;
+    }
 
-	public ComputedData getComputedData() {
-		return computedData;
-	}
+    @JsonProperty("RawData")
+    public RawData getRawData() {
+        return rawData;
+    }
 
-	public void setComputedData(ComputedData computedData) {
-		this.computedData = computedData;
-	}
+    public void setRawData(final RawData value) {
+        this.rawData = value;
+    }
 
+    @JsonProperty("ComputedData")
+    public ComputedData getComputedData() {
+        return computedData;
+    }
 
-	public DigitalAuthenticationResult getAuthentication() {
-		return Authentication;
-	}
+    public void setComputedData(final ComputedData value) {
+        this.computedData = value;
+    }
 
-	public void setAuthentication(DigitalAuthenticationResult authentication) {
-		Authentication = authentication;
-	}
+    @JsonProperty("Authentication")
+    public DigitalAuthenticationResult getAuthentication() {
+        return authentication;
+    }
+
+    public void setAuthentication(final DigitalAuthenticationResult value) {
+        authentication = value;
+    }
+
+    @Override
+    protected void buildSignificationProperties(List<Function<DetailedDecision, Comparable>> props) {
+        props.add(DetailedDecision::getCaseNumber);
+        props.add(DetailedDecision::getCaseId);
+        props.add(DetailedDecision::getRawData);
+        props.add(DetailedDecision::getComputedData);
+        props.add(DetailedDecision::getAuthentication);
+        super.buildSignificationProperties(props);
+    }
 }

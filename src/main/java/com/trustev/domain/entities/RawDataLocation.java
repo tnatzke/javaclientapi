@@ -1,32 +1,37 @@
 package com.trustev.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
-
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RawDataLocation
-{
-	@JsonProperty("Coordinates")
-	private RawDataCoordinates coordinates;
-	
-	@JsonProperty("Addresses")
-	private Map<String, String> addresses;
+public class RawDataLocation extends Base<RawDataLocation> {
+    private RawDataCoordinates coordinates;
+    private Map<String, String> addresses;
 
-	public RawDataCoordinates getCoordinates() {
-		return coordinates;
-	}
+    @JsonProperty("Coordinates")
+    public RawDataCoordinates getCoordinates() {
+        return coordinates;
+    }
 
-	public void setCoordinates(RawDataCoordinates coordinates) {
-		this.coordinates = coordinates;
-	}
+    public void setCoordinates(RawDataCoordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 
-	public Map<String, String> getAddresses() {
-		return addresses;
-	}
+    @JsonProperty("Addresses")
+    public Map<String, String> getAddresses() {
+        return addresses;
+    }
 
-	public void setAddresses(Map<String, String> addresses) {
-		this.addresses = addresses;
-	}
+    public void setAddresses(Map<String, String> addresses) {
+        this.addresses = addresses;
+    }
+
+    @Override
+    protected void buildSignificationProperties(List<Function<RawDataLocation, Comparable>> props) {
+        props.add(RawDataLocation::getCoordinates);
+        super.buildSignificationProperties(props);
+    }
 }

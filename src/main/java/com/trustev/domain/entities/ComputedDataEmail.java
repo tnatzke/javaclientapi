@@ -1,74 +1,82 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedDataEmail
-{
-	@JsonProperty("IsDisposable")
-	private boolean isDisposable;
+public class ComputedDataEmail extends Base<ComputedDataEmail> {
 
-	@JsonProperty("IsDomainNotAllowed")
-	private boolean isDomainNotAllowed;
+    private boolean isDisposable;
+    private boolean isDomainNotAllowed;
+    private boolean isUserNameNotAllowed;
+    private boolean containsDomainIssue;
+    private boolean containsMailboxIssue;
+    private boolean containsSyntaxIssue;
 
-	@JsonProperty("IsUserNameNotAllowed")
-	private boolean isUserNameNotAllowed;
+    @JsonProperty("IsDisposable")
+    public boolean isDisposable() {
+        return isDisposable;
+    }
 
-	@JsonProperty("ContainsDomainIssue")
-	private boolean containsDomainIssue;
+    public void setDisposable(boolean isDisposable) {
+        this.isDisposable = isDisposable;
+    }
 
-	@JsonProperty("ContainsMailboxIssue")
-	private boolean containsMailboxIssue;
+    @JsonProperty("IsDomainNotAllowed")
+    public boolean isDomainNotAllowed() {
+        return isDomainNotAllowed;
+    }
 
-	@JsonProperty("ContainsSyntaxIssue")
-	private boolean containsSyntaxIssue;
+    public void setDomainNotAllowed(boolean isDomainNotAllowed) {
+        this.isDomainNotAllowed = isDomainNotAllowed;
+    }
 
-	public boolean isDisposable() {
-		return isDisposable;
-	}
+    @JsonProperty("IsUserNameNotAllowed")
+    public boolean isUserNameNotAllowed() {
+        return isUserNameNotAllowed;
+    }
 
-	public void setDisposable(boolean isDisposable) {
-		this.isDisposable = isDisposable;
-	}
+    public void setUserNameNotAllowed(boolean isUserNameNotAllowed) {
+        this.isUserNameNotAllowed = isUserNameNotAllowed;
+    }
 
-	public boolean isDomainNotAllowed() {
-		return isDomainNotAllowed;
-	}
+    @JsonProperty("ContainsDomainIssue")
+    public boolean isContainsDomainIssue() {
+        return containsDomainIssue;
+    }
 
-	public void setDomainNotAllowed(boolean isDomainNotAllowed) {
-		this.isDomainNotAllowed = isDomainNotAllowed;
-	}
+    public void setContainsDomainIssue(boolean containsDomainIssue) {
+        this.containsDomainIssue = containsDomainIssue;
+    }
 
-	public boolean isUserNameNotAllowed() {
-		return isUserNameNotAllowed;
-	}
+    @JsonProperty("ContainsMailboxIssue")
+    public boolean isContainsMailboxIssue() {
+        return containsMailboxIssue;
+    }
 
-	public void setUserNameNotAllowed(boolean isUserNameNotAllowed) {
-		this.isUserNameNotAllowed = isUserNameNotAllowed;
-	}
+    public void setContainsMailboxIssue(boolean containsMailboxIssue) {
+        this.containsMailboxIssue = containsMailboxIssue;
+    }
 
-	public boolean isContainsDomainIssue() {
-		return containsDomainIssue;
-	}
+    @JsonProperty("ContainsSyntaxIssue")
+    public boolean isContainsSyntaxIssue() {
+        return containsSyntaxIssue;
+    }
 
-	public void setContainsDomainIssue(boolean containsDomainIssue) {
-		this.containsDomainIssue = containsDomainIssue;
-	}
+    public void setContainsSyntaxIssue(boolean containsSyntaxIssue) {
+        this.containsSyntaxIssue = containsSyntaxIssue;
+    }
 
-	public boolean isContainsMailboxIssue() {
-		return containsMailboxIssue;
-	}
-
-	public void setContainsMailboxIssue(boolean containsMailboxIssue) {
-		this.containsMailboxIssue = containsMailboxIssue;
-	}
-
-	public boolean isContainsSyntaxIssue() {
-		return containsSyntaxIssue;
-	}
-
-	public void setContainsSyntaxIssue(boolean containsSyntaxIssue) {
-		this.containsSyntaxIssue = containsSyntaxIssue;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedDataEmail, Comparable>> props) {
+        props.add(ComputedDataEmail::isDisposable);
+        props.add(ComputedDataEmail::isDomainNotAllowed);
+        props.add(ComputedDataEmail::isUserNameNotAllowed);
+        props.add(ComputedDataEmail::isContainsDomainIssue);
+        props.add(ComputedDataEmail::isContainsMailboxIssue);
+        props.add(ComputedDataEmail::isContainsSyntaxIssue);
+        super.buildSignificationProperties(props);
+    }
 }

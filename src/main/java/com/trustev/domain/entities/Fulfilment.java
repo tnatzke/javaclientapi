@@ -1,8 +1,15 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
-public class Fulfilment {
+public class Fulfilment extends Base<Fulfilment> {
+
+    private TimeToFulfilment timeToFulfilment;
+    private FulfilmentMethod fulfilmentMethod;
+    private FulfilmentGeoLocation fulfilmentGeoLocation;
+
     /**
      * @return The TimeToFulfilment of this Case
      */
@@ -14,11 +21,9 @@ public class Fulfilment {
     /**
      * @param timeToFulfilment to set
      */
-    @JsonProperty("TimeToFulfilment")
     public void setTimeToFulfilment(TimeToFulfilment timeToFulfilment) {
         this.timeToFulfilment = timeToFulfilment;
     }
-    private TimeToFulfilment timeToFulfilment;
 
     /**
      * @return The FulfilmentMethod of this Case
@@ -31,11 +36,9 @@ public class Fulfilment {
     /**
      * @param fulfilmentMethod to set
      */
-    @JsonProperty("Method")
     public void setFulfilmentMethod(FulfilmentMethod fulfilmentMethod) {
         this.fulfilmentMethod = fulfilmentMethod;
     }
-    private FulfilmentMethod fulfilmentMethod;
 
     /**
      * @return The FulfilmentGeoLocation of this Case
@@ -48,10 +51,15 @@ public class Fulfilment {
     /**
      * @param fulfilmentGeoLocation to set
      */
-    @JsonProperty("GeoLocation")
     public void setFulfilmentGeoLocation(FulfilmentGeoLocation fulfilmentGeoLocation) {
         this.fulfilmentGeoLocation = fulfilmentGeoLocation;
     }
-    private FulfilmentGeoLocation fulfilmentGeoLocation;
 
+    @Override
+    protected void buildSignificationProperties(List<Function<Fulfilment, Comparable>> props) {
+        props.add(Fulfilment::getTimeToFulfilment);
+        props.add(Fulfilment::getFulfilmentMethod);
+        props.add(Fulfilment::getFulfilmentGeoLocation);
+        super.buildSignificationProperties(props);
+    }
 }

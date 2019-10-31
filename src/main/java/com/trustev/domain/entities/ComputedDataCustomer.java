@@ -1,85 +1,93 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedDataCustomer
-{
-	@JsonProperty("CaseType")
-	private CaseType caseType;
+public class ComputedDataCustomer extends Base<ComputedDataCustomer> {
 
-	@JsonProperty("IsReturningToPlatform")
-	private boolean isReturningToPlatform;
+    private CaseType caseType;
+    private boolean isReturningToPlatform;
+    private boolean hasGoodHistory;
+    private boolean hasBadHistory;
+    private boolean hasSuspiciousHistory;
+    private boolean isNameAddressCombinationValid;
+    private ComputedDataEmail email;
 
-	@JsonProperty("HasGoodHistory")
-	private boolean hasGoodHistory;
+    @JsonProperty("CaseType")
+    public CaseType getCaseType() {
+        return caseType;
+    }
 
-	@JsonProperty("HasBadHistory")
-	private boolean hasBadHistory;
+    public void setCaseType(CaseType caseType) {
+        this.caseType = caseType;
+    }
 
-	@JsonProperty("HasSuspiciousHistory")
-	private boolean hasSuspiciousHistory;
+    @JsonProperty("IsReturningToPlatform")
+    public boolean isReturningToPlatform() {
+        return isReturningToPlatform;
+    }
 
-	@JsonProperty("IsNameAddressCombinationValid")
-	private boolean isNameAddressCombinationValid;
+    public void setReturningToPlatform(boolean isReturningToPlatform) {
+        this.isReturningToPlatform = isReturningToPlatform;
+    }
 
-	@JsonProperty("Email")
-	private ComputedDataEmail email;
+    @JsonProperty("HasGoodHistory")
+    public boolean isHasGoodHistory() {
+        return hasGoodHistory;
+    }
 
-	public CaseType getCaseType() {
-		return caseType;
-	}
+    public void setHasGoodHistory(boolean hasGoodHistory) {
+        this.hasGoodHistory = hasGoodHistory;
+    }
 
-	public void setCaseType(CaseType caseType) {
-		this.caseType = caseType;
-	}
+    @JsonProperty("HasBadHistory")
+    public boolean isHasBadHistory() {
+        return hasBadHistory;
+    }
 
-	public boolean isReturningToPlatform() {
-		return isReturningToPlatform;
-	}
+    public void setHasBadHistory(boolean hasBadHistory) {
+        this.hasBadHistory = hasBadHistory;
+    }
 
-	public void setReturningToPlatform(boolean isReturningToPlatform) {
-		this.isReturningToPlatform = isReturningToPlatform;
-	}
+    @JsonProperty("HasSuspiciousHistory")
+    public boolean isHasSuspiciousHistory() {
+        return hasSuspiciousHistory;
+    }
 
-	public boolean isHasGoodHistory() {
-		return hasGoodHistory;
-	}
+    public void setHasSuspiciousHistory(boolean hasSuspiciousHistory) {
+        this.hasSuspiciousHistory = hasSuspiciousHistory;
+    }
 
-	public void setHasGoodHistory(boolean hasGoodHistory) {
-		this.hasGoodHistory = hasGoodHistory;
-	}
+    @JsonProperty("IsNameAddressCombinationValid")
+    public boolean isNameAddressCombinationValid() {
+        return isNameAddressCombinationValid;
+    }
 
-	public boolean isHasBadHistory() {
-		return hasBadHistory;
-	}
+    public void setNameAddressCombinationValid(boolean isNameAddressCombinationValid) {
+        this.isNameAddressCombinationValid = isNameAddressCombinationValid;
+    }
 
-	public void setHasBadHistory(boolean hasBadHistory) {
-		this.hasBadHistory = hasBadHistory;
-	}
+    @JsonProperty("Email")
+    public ComputedDataEmail getEmail() {
+        return email;
+    }
 
-	public boolean isHasSuspiciousHistory() {
-		return hasSuspiciousHistory;
-	}
+    public void setEmail(ComputedDataEmail email) {
+        this.email = email;
+    }
 
-	public void setHasSuspiciousHistory(boolean hasSuspiciousHistory) {
-		this.hasSuspiciousHistory = hasSuspiciousHistory;
-	}
-
-	public boolean isNameAddressCombinationValid() {
-		return isNameAddressCombinationValid;
-	}
-
-	public void setNameAddressCombinationValid(boolean isNameAddressCombinationValid) {
-		this.isNameAddressCombinationValid = isNameAddressCombinationValid;
-	}
-
-	public ComputedDataEmail getEmail() {
-		return email;
-	}
-
-	public void setEmail(ComputedDataEmail email) {
-		this.email = email;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedDataCustomer, Comparable>> props) {
+        props.add(ComputedDataCustomer::getCaseType);
+        props.add(ComputedDataCustomer::isReturningToPlatform);
+        props.add(ComputedDataCustomer::isHasGoodHistory);
+        props.add(ComputedDataCustomer::isHasBadHistory);
+        props.add(ComputedDataCustomer::isHasSuspiciousHistory);
+        props.add(ComputedDataCustomer::isNameAddressCombinationValid);
+        props.add(ComputedDataCustomer::getEmail);
+        super.buildSignificationProperties(props);
+    }
 }

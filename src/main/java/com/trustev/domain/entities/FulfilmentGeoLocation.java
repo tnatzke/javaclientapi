@@ -1,8 +1,10 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.trustev.util.EnumUtils;
 
-public enum FulfilmentGeoLocation {
+public enum FulfilmentGeoLocation implements BaseEnum<FulfilmentGeoLocation> {
     /// <summary>
     /// Undefined
     /// </summary>
@@ -15,14 +17,20 @@ public enum FulfilmentGeoLocation {
     /// International Location
     /// </summary>
     International(2);
-    private final int geoLocation;
-    private FulfilmentGeoLocation(final int geoLocation) {
-        this.geoLocation = geoLocation;
+
+    private final int id;
+
+    private FulfilmentGeoLocation(final int id) {
+        this.id = id;
     }
 
     @JsonValue
-    public int toInt()
-    {
-        return this.geoLocation;
+    public int getId() {
+        return this.id;
+    }
+
+    @JsonCreator
+    public static FulfilmentGeoLocation convertFromString(String id) {
+        return EnumUtils.convertFromString(id, FulfilmentGeoLocation.class);
     }
 }

@@ -2,64 +2,70 @@ package com.trustev.domain.entities;
 
 import java.util.Collection;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RawDataCustomer
-{
-	@JsonProperty("FirstName")
-	private String firstName;
+public class RawDataCustomer extends Base<RawDataCustomer> {
+    private String firstName;
+    private String lastName;
+    private Collection<RawDataEmail> emails;
+    private String socialSecurityNumber;
+    private String phoneNumber;
 
-	@JsonProperty("LastName")
-	private String lastName;
+    @JsonProperty("FirstName")
+    public String getFirstName() {
+        return firstName;
+    }
 
-	@JsonProperty("Emails")
-	private Collection<RawDataEmail> emails;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	@JsonProperty("SocialSecurityNumber")
-	private String socialSecurityNumber;
+    @JsonProperty("LastName")
+    public String getLastName() {
+        return lastName;
+    }
 
-	@JsonProperty("PhoneNumber")
-	private String phoneNumber;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    @JsonProperty("Emails")
+    public Collection<RawDataEmail> getEmails() {
+        return emails;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setEmails(Collection<RawDataEmail> emails) {
+        this.emails = emails;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    @JsonProperty("SocialSecurityNumber")
+    public String getSocialSecurityNumber() {
+        return socialSecurityNumber;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
 
-	public Collection<RawDataEmail> getEmails() {
-		return emails;
-	}
+    @JsonProperty("PhoneNumber")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public void setEmails(Collection<RawDataEmail> emails) {
-		this.emails = emails;
-	}
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public String getSocialSecurityNumber() {
-		return socialSecurityNumber;
-	}
-
-	public void setSocialSecurityNumber(String socialSecurityNumber) {
-		this.socialSecurityNumber = socialSecurityNumber;
-	}
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<RawDataCustomer, Comparable>> props) {
+        props.add(RawDataCustomer::getFirstName);
+        props.add(RawDataCustomer::getLastName);
+        props.add(RawDataCustomer::getSocialSecurityNumber);
+        props.add(RawDataCustomer::getPhoneNumber);
+        super.buildSignificationProperties(props);
+    }
 }

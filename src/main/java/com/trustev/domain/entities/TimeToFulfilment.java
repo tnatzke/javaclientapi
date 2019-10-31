@@ -1,8 +1,10 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.trustev.util.EnumUtils;
 
-public enum TimeToFulfilment {
+public enum TimeToFulfilment implements BaseEnum<TimeToFulfilment> {
     /// <summary>
     /// Undefined
     /// </summary>
@@ -28,15 +30,19 @@ public enum TimeToFulfilment {
     /// </summary>
     UpTo5Days(5);
 
-    private final int timeTo;
-    private TimeToFulfilment(final int timeTo) {
-        this.timeTo = timeTo;
+    private final int id;
+
+    TimeToFulfilment(final int id) {
+        this.id = id;
     }
 
     @JsonValue
-    public int toInt()
-    {
-        return this.timeTo;
+    public int getId() {
+        return this.id;
     }
 
+    @JsonCreator
+    public static TimeToFulfilment convertFromString(String id) {
+        return EnumUtils.convertFromString(id, TimeToFulfilment.class);
     }
+}

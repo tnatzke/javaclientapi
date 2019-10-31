@@ -1,8 +1,10 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.trustev.util.EnumUtils;
 
-public enum FulfilmentMethod {
+public enum FulfilmentMethod implements BaseEnum<FulfilmentMethod> {
     /// <summary>
     /// Undefined
     /// </summary>
@@ -23,14 +25,20 @@ public enum FulfilmentMethod {
     /// Courier
     /// </summary>
     Courier(4);
-    private final int method;
-    private FulfilmentMethod(final int method) {
-        this.method = method;
+
+    private final int id;
+
+    FulfilmentMethod(final int id) {
+        this.id = id;
     }
 
     @JsonValue
-    public int toInt()
-    {
-        return this.method;
+    public int getId() {
+        return this.id;
+    }
+
+    @JsonCreator
+    public static FulfilmentMethod convertFromString(String id) {
+        return EnumUtils.convertFromString(id, FulfilmentMethod.class);
     }
 }

@@ -1,19 +1,26 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedDataTransaction
-{
-	@JsonProperty("Email")
-	private ComputedDataEmail email;
+public class ComputedDataTransaction extends Base<ComputedDataTransaction> {
+    private ComputedDataEmail email;
 
-	public ComputedDataEmail getEmail() {
-		return email;
-	}
+    @JsonProperty("Email")
+    public ComputedDataEmail getEmail() {
+        return email;
+    }
 
-	public void setEmail(ComputedDataEmail email) {
-		this.email = email;
-	}
+    public void setEmail(ComputedDataEmail email) {
+        this.email = email;
+    }
+
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedDataTransaction, Comparable>> props) {
+        props.add(ComputedDataTransaction::getEmail);
+        super.buildSignificationProperties(props);
+    }
 }

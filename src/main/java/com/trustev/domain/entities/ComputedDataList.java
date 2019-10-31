@@ -1,96 +1,103 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ComputedDataList
-{
-	@JsonProperty("CaseType")
-	private CaseType caseType;
+public class ComputedDataList extends Base<ComputedDataList> {
 
-	@JsonProperty("WasBinHit")
-	private boolean wasBinHit;
+    private CaseType caseType;
+    private boolean wasBinHit;
+    private boolean wasEmailDomainHit;
+    private boolean wasFullEmailAddressHit;
+    private boolean wasPostCodeHit;
+    private boolean wasCustomerIdHit;
+    private boolean wasAccountNumberHit;
+    private boolean wasIPHit;
 
-	@JsonProperty("WasEmailDomainHit")
-	private boolean wasEmailDomainHit;
+    @JsonProperty("CaseType")
+    public CaseType getCaseType() {
+        return caseType;
+    }
 
-	@JsonProperty("WasFullEmailAddressHit")
-	private boolean wasFullEmailAddressHit;
+    public void setCaseType(CaseType caseType) {
+        this.caseType = caseType;
+    }
 
-	@JsonProperty("WasPostCodeHit")
-	private boolean wasPostCodeHit;
+    @JsonProperty("WasBinHit")
+    public boolean isWasBinHit() {
+        return wasBinHit;
+    }
 
-	@JsonProperty("WasCustomerIdHit")
-	private boolean wasCustomerIdHit;
+    public void setWasBinHit(boolean wasBinHit) {
+        this.wasBinHit = wasBinHit;
+    }
 
-	@JsonProperty("WasAccountNumberHit")
-	private boolean wasAccountNumberHit;
+    @JsonProperty("WasEmailDomainHit")
+    public boolean isWasEmailDomainHit() {
+        return wasEmailDomainHit;
+    }
 
-	@JsonProperty("WasIPHit")
-	private boolean wasIPHit;
+    public void setWasEmailDomainHit(boolean wasEmailDomainHit) {
+        this.wasEmailDomainHit = wasEmailDomainHit;
+    }
 
-	public CaseType getCaseType() {
-		return caseType;
-	}
+    @JsonProperty("WasFullEmailAddressHit")
+    public boolean isWasFullEmailAddressHit() {
+        return wasFullEmailAddressHit;
+    }
 
-	public void setCaseType(CaseType caseType) {
-		this.caseType = caseType;
-	}
+    public void setWasFullEmailAddressHit(boolean wasFullEmailAddressHit) {
+        this.wasFullEmailAddressHit = wasFullEmailAddressHit;
+    }
 
-	public boolean isWasBinHit() {
-		return wasBinHit;
-	}
+    @JsonProperty("WasPostCodeHit")
+    public boolean isWasPostCodeHit() {
+        return wasPostCodeHit;
+    }
 
-	public void setWasBinHit(boolean wasBinHit) {
-		this.wasBinHit = wasBinHit;
-	}
+    public void setWasPostCodeHit(boolean wasPostCodeHit) {
+        this.wasPostCodeHit = wasPostCodeHit;
+    }
 
-	public boolean isWasEmailDomainHit() {
-		return wasEmailDomainHit;
-	}
+    @JsonProperty("WasCustomerIdHit")
+    public boolean isWasCustomerIdHit() {
+        return wasCustomerIdHit;
+    }
 
-	public void setWasEmailDomainHit(boolean wasEmailDomainHit) {
-		this.wasEmailDomainHit = wasEmailDomainHit;
-	}
+    public void setWasCustomerIdHit(boolean wasCustomerIdHit) {
+        this.wasCustomerIdHit = wasCustomerIdHit;
+    }
 
-	public boolean isWasFullEmailAddressHit() {
-		return wasFullEmailAddressHit;
-	}
+    @JsonProperty("WasAccountNumberHit")
+    public boolean isWasAccountNumberHit() {
+        return wasAccountNumberHit;
+    }
 
-	public void setWasFullEmailAddressHit(boolean wasFullEmailAddressHit) {
-		this.wasFullEmailAddressHit = wasFullEmailAddressHit;
-	}
+    public void setWasAccountNumberHit(boolean wasAccountNumberHit) {
+        this.wasAccountNumberHit = wasAccountNumberHit;
+    }
 
-	public boolean isWasPostCodeHit() {
-		return wasPostCodeHit;
-	}
+    @JsonProperty("WasIPHit")
+    public boolean isWasIPHit() {
+        return wasIPHit;
+    }
 
-	public void setWasPostCodeHit(boolean wasPostCodeHit) {
-		this.wasPostCodeHit = wasPostCodeHit;
-	}
+    public void setWasIPHit(boolean wasIPHit) {
+        this.wasIPHit = wasIPHit;
+    }
 
-	public boolean isWasCustomerIdHit() {
-		return wasCustomerIdHit;
-	}
-
-	public void setWasCustomerIdHit(boolean wasCustomerIdHit) {
-		this.wasCustomerIdHit = wasCustomerIdHit;
-	}
-
-	public boolean isWasAccountNumberHit() {
-		return wasAccountNumberHit;
-	}
-
-	public void setWasAccountNumberHit(boolean wasAccountNumberHit) {
-		this.wasAccountNumberHit = wasAccountNumberHit;
-	}
-
-	public boolean isWasIPHit() {
-		return wasIPHit;
-	}
-
-	public void setWasIPHit(boolean wasIPHit) {
-		this.wasIPHit = wasIPHit;
-	}
+    @Override
+    protected void buildSignificationProperties(List<Function<ComputedDataList, Comparable>> props) {
+        props.add(ComputedDataList::getCaseType);
+        props.add(ComputedDataList::isWasEmailDomainHit);
+        props.add(ComputedDataList::isWasFullEmailAddressHit);
+        props.add(ComputedDataList::isWasPostCodeHit);
+        props.add(ComputedDataList::isWasCustomerIdHit);
+        props.add(ComputedDataList::isWasAccountNumberHit);
+        props.add(ComputedDataList::isWasIPHit);
+        super.buildSignificationProperties(props);
+    }
 }

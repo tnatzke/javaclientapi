@@ -1,19 +1,26 @@
 package com.trustev.domain.entities;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.annotate.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.function.Function;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RawDataEmail
-{
-	@JsonProperty("EmailAddress")
-	private String emailAddress;
+public class RawDataEmail extends Base<RawDataEmail> {
+    private String emailAddress;
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    @JsonProperty("EmailAddress")
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    @Override
+    protected void buildSignificationProperties(List<Function<RawDataEmail, Comparable>> props) {
+        props.add(RawDataEmail::getEmailAddress);
+        super.buildSignificationProperties(props);
+    }
 }

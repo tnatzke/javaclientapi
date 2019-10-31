@@ -2,19 +2,14 @@ package com.trustev.web;
 
 import com.trustev.domain.entities.*;
 import com.trustev.domain.exceptions.TrustevApiException;
-import com.trustev.web.ApiClient;
 import org.junit.*;
-
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Properties;
 import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class TrustevMultipleMerchantSiteClientTest {
     // Set your test credentials and baseURL to run the integration tests
@@ -139,17 +134,17 @@ public class TrustevMultipleMerchantSiteClientTest {
         ApiClient.removeAllMerchantSites();
 
         if (alternateUrl != null && alternateUrl != "") {
-            ApiClient.SetUp(userName, password, secret, alternateUrl);
-            ApiClient.SetUp(userName2, password2, secret2, alternateUrl2);
+            ApiClient.setUp(userName, password, secret, alternateUrl);
+            ApiClient.setUp(userName2, password2, secret2, alternateUrl2);
 
             merchantSite1 = new MerchantSite(userName, password, secret, alternateUrl);
             merchantSite2 = new MerchantSite(userName2, password2, secret2, alternateUrl2);
         } else if ((baseUrl != null) && (baseUrl2 != null)) {
-            ApiClient.SetUp(userName, password, secret, baseUrl);
-            ApiClient.SetUp(userName2, password2, secret2, baseUrl2);
+            ApiClient.setUp(userName, password, secret, baseUrl);
+            ApiClient.setUp(userName2, password2, secret2, baseUrl2);
 
-            merchantSite1 = new MerchantSite(userName, password, secret, baseUrl);
-            merchantSite2 = new MerchantSite(userName2, password2, secret2, baseUrl2);
+            merchantSite1 = new MerchantSite(userName, password, secret, baseUrl.getUrl());
+            merchantSite2 = new MerchantSite(userName2, password2, secret2, baseUrl2.getUrl());
         }
     }
 
@@ -2182,7 +2177,7 @@ public class TrustevMultipleMerchantSiteClientTest {
         Case kase = new Case(UUID.randomUUID(), UUID.randomUUID().toString());
         Case responseCase = ApiClient.postCase(kase);
 
-        ApiClient.SetUp(merchantSite2.getUserName(), merchantSite2.getPassword(), merchantSite2.getSecret(), merchantSite2.getBaseUrlString());
+        ApiClient.setUp(merchantSite2.getUserName(), merchantSite2.getPassword(), merchantSite2.getSecret(), merchantSite2.getBaseUrl());
 
         CaseStatus caseStatus = new CaseStatus();
         caseStatus.setComment("Testing Status!!");
@@ -2213,7 +2208,7 @@ public class TrustevMultipleMerchantSiteClientTest {
         kase.setCustomer(customer);
         Case responseCase = ApiClient.postCase(kase);
 
-        ApiClient.SetUp(merchantSite2.getUserName(), merchantSite2.getPassword(), merchantSite2.getSecret(), merchantSite2.getBaseUrlString());
+        ApiClient.setUp(merchantSite2.getUserName(), merchantSite2.getPassword(), merchantSite2.getSecret(), merchantSite2.getBaseUrl());
 
         try {
             Decision decision = ApiClient.getDecision(responseCase.getId());
