@@ -1,4 +1,4 @@
-package com.trustev.integration;
+package com.trustev.web;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

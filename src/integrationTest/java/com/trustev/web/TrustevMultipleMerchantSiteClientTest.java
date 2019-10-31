@@ -1,4 +1,4 @@
-package com.trustev.integration;
+package com.trustev.web;
 
 import com.trustev.domain.entities.*;
 import com.trustev.domain.exceptions.TrustevApiException;
