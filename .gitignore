@@ -1,1 +1,5 @@
 /target/
+/trustev-integration.iml
+/.idea/
+/.gradle/
+/build/
