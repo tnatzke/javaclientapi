@@ -10,20 +10,12 @@ public class KBAStatusTest {
 
     @Test
     public void testSerializingEnum() throws IOException {
-
         ObjectMapper mapper = new ObjectMapper();
-
         for (KBAStatus status : KBAStatus.class.getEnumConstants()) {
-
             String json = mapper.writeValueAsString(status);
-
-            Assert.assertEquals(status.getId(), json);
-
+            Assert.assertEquals(String.valueOf(status.getId()), json);
             KBAStatus enumFromJson = mapper.readValue(json, KBAStatus.class);
-
             Assert.assertEquals(status, enumFromJson);
         }
-
-
     }
 }
